@@ -12,9 +12,18 @@ class ArticleController extends AbstractController
      */
     public function homepage()
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ArticleController.php',
+        return $this->render('article/index.html.twig', [
+            'controller_name' => 'ArticleController',
+        ]);
+    }
+
+    /**
+     * @Route("/news/{slug}")
+     */
+    public function show($slug)
+    {
+        return $this->render('article/show.html.twig', [
+            'slug' => $slug
         ]);
     }
 }
