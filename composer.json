@@ -5,12 +5,17 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "easycorp/easy-log-handler": "^1.0.7",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony/console": "4.2.*",
+        "symfony/debug-bundle": "4.2.*",
         "symfony/dotenv": "4.2.*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "4.2.*",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/profiler-pack": "*",
         "symfony/twig-bundle": "4.2.*",
+        "symfony/var-dumper": "4.2.*",
         "symfony/yaml": "4.2.*"
     },
     "config": {
@@ -62,6 +67,7 @@
     "require-dev": {
         "sensiolabs/security-checker": "^5.0",
         "symfony/maker-bundle": "^1.11",
+        "symfony/profiler-pack": "^1.0",
         "symfony/web-server-bundle": "4.2.*"
     }
 }
