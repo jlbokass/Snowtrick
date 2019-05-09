@@ -29,10 +29,25 @@ class ArticleFixtures extends BaseFixture
     ];
 
     private static $articleImages = [
+        'snow1.jpg',
+        'snow2.jpg',
+        'snow3.jpg',
         'snow4.jpg',
         'snow5.jpg',
         'snow6.jpg',
         'snow7.jpg',
+        'snow8.jpg',
+        'snow9.jpg',
+        'snow10.jpg',
+        'snow11.jpg',
+        'snow12.jpg',
+        'snow13.jpg',
+        'snow14.jpg',
+        'snow15.jpg',
+        'snow16.jpg',
+        'snow17.jpg',
+        'snow18.jpg',
+        'snow19.jpg',
     ];
 
     private static $articleAuthors = [
@@ -47,8 +62,7 @@ class ArticleFixtures extends BaseFixture
         $this->createMany(Article::class,17, function (Article $article, $count){
 
         $article->setTitle($this->faker->unique()->randomElement(self::$articleTitle))
-            ->setSlug($this->faker->slug)
-            ->setContent($this->faker->paragraph(7, true));
+            ->setContent($this->faker->paragraph(10, true));
 
         // publish most articles
         if ($this->faker->boolean(70)) {
@@ -57,7 +71,7 @@ class ArticleFixtures extends BaseFixture
         }
 
         $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
-            ->setImageFilename($this->faker->randomElement(self::$articleImages));
+            ->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
 
     });
         $manager->flush();

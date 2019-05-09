@@ -10,7 +10,7 @@ body, html {
 .image-fullscreen {
   height: 100%;
   /*background: url('http://placehold.it/1920x1080') no-repeat center center fixed;*/
-	background: url('/images/snow9.jpg') no-repeat center center fixed;
+	background: url('/images/fullscreen-image.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
