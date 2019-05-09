@@ -8,6 +8,7 @@
     <!-- Article detaile -->
     <section>
         <div class="jumbotron jumbotron-fluid">
+            <img src="{{ asset(article.imagePath) }}" alt="">
             <div class="container">
                 <h1>{{ article.title }}</h1>
             </div>
@@ -29,7 +30,8 @@
     <div class="container-fluid">
         <div class="row text-center">
             <div class="col-md-12 p-3 bg-info">
-                {{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}
+                <span class="mr-2">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</span>
+                <span>{{ article.author }}</span>
             </div>
         </div>
     </div>

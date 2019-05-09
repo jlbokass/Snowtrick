@@ -32,6 +32,10 @@ class ArticleAdminController extends AbstractController
             $article->setPublishedAt(new \DateTime(sprintf('-%d day', rand(1, 100))));
         }
 
+        $article->setAuthor('Mike Ferengi')
+            ->setImageFilename('snow4.jpg')
+            ;
+
         $manager->persist($article);
         $manager->flush();
 
