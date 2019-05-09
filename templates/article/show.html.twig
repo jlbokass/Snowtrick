@@ -2,49 +2,40 @@
 
 
 
-{% block title %}Hello from homepage{% endblock %}
+{% block title %}Read: {{ article.title }}{% endblock %}
 
 {% block body %}
     <!-- Article detaile -->
     <section>
         <div class="jumbotron jumbotron-fluid">
+            <img src="{{ asset(article.imagePath) }}" alt="">
             <div class="container">
-                <h1>{{ slug }}</h1>
-                <p>Bootstrap is the most popular HTML, CSS...</p>
+                <h1>{{ article.title }}</h1>
             </div>
         </div>
 
         <div class="container">
-            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut dolorum ea fuga fugit veniam. Aspernatur
-                cum, eius eveniet facilis iure minus nobis placeat! Beatae culpa, laudantium magnam natus quisquam
-                rerum!
+            <div class="row">
+                <div class="col-md-12 p-3">
+                    <p>{{ article.content }}</p>
+                </div>
             </div>
-            <div>Blanditiis eaque numquam pariatur tempora. Accusantium at facere neque numquam porro recusandae ullam!
-                Asperiores aut debitis eaque ipsa iure laboriosam magni, quam, quidem quos recusandae rem repellat
-                repellendus, tempore. Quidem!
-            </div>
-            <div>Architecto asperiores cum dolorum error fugit molestiae quod ratione rem? Animi corporis cumque dolores
-                eius error fugit impedit iusto laudantium maiores modi nihil pariatur quaerat reprehenderit, sit tempore
-                vel voluptates!
-            </div>
-            <div>Optio quia reprehenderit saepe ut voluptatum. Ab alias amet architecto dicta doloremque ducimus, eaque
-                eligendi itaque, nisi recusandae sapiente sed? Et, quisquam suscipit. Ab excepturi harum inventore
-                molestias perspiciatis reprehenderit.
-            </div>
-            <div>Accusamus dignissimos enim expedita officiis quidem sunt voluptatibus. Delectus ea eos explicabo
-                molestias neque quaerat quos repellendus reprehenderit veniam vero? Distinctio ipsum molestiae odio quam
-                quisquam repellendus sequi tenetur! Est?
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="share-icons mb-5"><span class="pr-1">Share:</span> <i class="pr-1 fab fa-facebook-square"></i></i><i class="pr-1 fab fa-twitter-square"></i><i class="fab fa-instagram"></i></p>
+                </div>
             </div>
         </div>
     </section>
-
-
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col-sm-12">
-                <p class="share-icons mb-5"><span class="pr-1">Share:</span> <i class="pr-1 fab fa-facebook-square"></i></i><i class="pr-1 fab fa-twitter-square"></i><i class="fab fa-instagram"></i></p>
+    <div class="container-fluid">
+        <div class="row text-center">
+            <div class="col-md-12 p-3 bg-info">
+                <span class="mr-2">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</span>
+                <span>{{ article.author }}</span>
             </div>
         </div>
+    </div>
+    <div class="container mt-5">
         <div class="row">
             <div class="col-sm-12">
                 <h3><i class="pr-3 fa fa-comment"></i>Comments</h3>
@@ -64,15 +55,17 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
-                        <div class="comment-container d-inline-block pl-3 align-top">
-                            <span class="commenter-name">Mike Ferengi</span>
-                            <br>
-                            <span class="comment"> Lorem ipsum  minus nam non, voluptates? Accusantium, at consequatur deleniti facere ipsam, nesciunt quas quis quo, ratione ut vero.</span>
-                            <p><a href="#">Reply</a></p>
+                    {% for comment in comments %}
+                        <div class="col-sm-12">
+                            <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
+                            <div class="comment-container d-inline-block pl-3 align-top">
+                                <span class="commenter-name">Mike Ferengi</span>
+                                <br>
+                                <span class="comment"> {{ comment }}</span>
+                                <p><a href="#">Reply</a></p>
+                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
 
