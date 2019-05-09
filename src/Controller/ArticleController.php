@@ -15,7 +15,7 @@ class ArticleController extends AbstractController
     public function homepage(ArticleRepository $articleRepository)
     {
         /** @var Article $articles */
-        $articles = $articleRepository->findAll();
+        $articles = $articleRepository->findAllPublishedOrderedByNewest();
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -27,7 +27,7 @@ class ArticleController extends AbstractController
      */
     public function article(ArticleRepository $articleRepository)
     {
-        $articles = $articleRepository->findAll();
+        $articles = $articleRepository->findAllPublishedOrderedByNewest();
 
         return $this->render('article/article.html.twig', [
             'articles' => $articles
@@ -37,16 +37,8 @@ class ArticleController extends AbstractController
     /**
      * @Route("/news/{slug}", name="article_show")
      */
-    public function show($slug, ArticleRepository $articleRepository)
+    public function show(Article $article)
     {
-        /** @var Article $articles */
-        $article = $articleRepository->findOneBy(['slug' => $slug]);
-
-        if (!$article) {
-
-            throw $this->createNotFoundException(sprintf('No article for slug "%s"', $slug));
-        }
-
         $comments = [
             'I ate a normal rock once. It did NOT taste like bacon!',
             'Woohoo! I\'m going on all-asteroid diet!',
@@ -54,7 +46,6 @@ class ArticleController extends AbstractController
         ];
 
         return $this->render('article/show.html.twig', [
-            'slug' => $slug,
             'article' => $article,
             'comments' => $comments,
         ]);
