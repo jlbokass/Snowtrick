@@ -7,28 +7,57 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ArticleFixtures extends BaseFixture
 {
+    private static $articleTitle = [
+        'BackFlip',
+        'The HeelClicker',
+        'The Superman',
+        'The Double Cancan',
+        'Backside Triple Cork 1440',
+        'Method Air',
+        'Double Backflip One Foot',
+        'Double Mc Twist 1260',
+        'Double Backside Rodeo 1080',
+        'Cork',
+        'Revert',
+        'The Switch',
+        'Backside Air',
+        'Crippler',
+        'Handplant',
+        'The 270',
+        'Air to Fakie',
+        'Backside Rodeo',
+    ];
+
+    private static $articleImages = [
+        'snow4.jpg',
+        'snow5.jpg',
+        'snow6.jpg',
+        'snow7.jpg',
+    ];
+
+    private static $articleAuthors = [
+      'Black Panther',
+      'Thor the God',
+      'Hulk the Monster',
+      'Black Window',
+    ];
+
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Article::class,17, function (Article $article, $count){
 
-        $article->setTitle('Trick-' . rand(100, 999))
-            ->setSlug('link-for-trick-' . $count)
-            ->setContent('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet purus nec 
-            diam feugiat consectetur a accumsan orci. Cras tincidunt ex ipsum, vitae tincidunt mi sollicitudin sit amet.
-             Duis fermentum elit vitae metus malesuada vehicula. Mauris interdum, neque sit amet posuere ultricies,
-              metus augue pellentesque eros, et eleifend nunc justo sed nisl. Quisque tempus venenatis eros, faucibus 
-              ullamcorper sapien vehicula id. Donec ac mollis sem. Morbi tempus semper metus ut posuere. Aliquam mi 
-              nisl, ultrices a augue in, ultricies fringilla augue. Vestibulum ornare mollis risus, ultricies blandit 
-              tellus porta vitae.');
+        $article->setTitle($this->faker->unique()->randomElement(self::$articleTitle))
+            ->setSlug($this->faker->slug)
+            ->setContent($this->faker->paragraph(7, true));
 
         // publish most articles
-        if (rand(1, 10) > 2) {
+        if ($this->faker->boolean(70)) {
 
-            $article->setPublishedAt(new \DateTime(sprintf('-%d day', rand(1, 100))));
+            $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
         }
 
-        $article->setAuthor('Mike Ferengi')
-            ->setImageFilename('snow4.jpg');
+        $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
+            ->setImageFilename($this->faker->randomElement(self::$articleImages));
 
     });
         $manager->flush();
