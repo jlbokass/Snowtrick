@@ -16,7 +16,7 @@ class CategoryFixtures extends BaseFixture
         'Slides',
     ];
 
-    public function loadData(ObjectManager $manager)
+    protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Category::class,6, function (Category $category) {
 
