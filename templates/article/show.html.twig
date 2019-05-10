@@ -31,7 +31,8 @@
         <div class="row text-center">
             <div class="col-md-12 p-3 bg-info">
                 <span class="mr-2">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</span>
-                <span>{{ article.author }}</span>
+                <span class="mr-2">{{ article.author }}</span>
+                <span>{{ article.category.categoryName }}</span>
             </div>
         </div>
     </div>

@@ -3,10 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
-use App\Entity\Comment;
+use App\Entity\Category;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class ArticleFixtures extends BaseFixture
+class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
 {
     private static $articleTitle = [
         'BackFlip',
@@ -73,9 +74,17 @@ class ArticleFixtures extends BaseFixture
 
         $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
             ->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
+        $article->setCategory($this->getRandomReference(Category::class));
 
     });
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            CategoryFixtures::class,
+        ];
     }
 }
