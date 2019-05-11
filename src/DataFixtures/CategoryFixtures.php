@@ -3,11 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\User;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
+class CategoryFixtures extends BaseFixture
 {
     private static $categoryTitle = [
         'Straight airs',
@@ -25,7 +23,7 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
             $category->setTitle($this->faker->unique()->randomElement(self::$categoryTitle));
             $category->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $category->setContent($this->faker->unique()->paragraph);
-            $category->setAuthor($this->getRandomReference(User::class));
+            $category->setAuthor($this->faker->name);
 
             // publish most articles
             if ($this->faker->boolean(90)) {
@@ -36,13 +34,4 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
 
         $manager->flush();
     }
-
-    public function getDependencies()
-    {
-        return [
-            UserFixture::class
-        ];
-    }
-
-
 }

@@ -25,7 +25,7 @@ class ArticleAdminController extends AbstractController
 
         $articles = $articleRepository->findAllWithSearch($q);
 
-        return $this->render('article_admin/index2.html.twig', [
+        return $this->render('article_admin/index.html.twig', [
             'articles' => $articles,
         ]);
     }
