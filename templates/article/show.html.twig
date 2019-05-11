@@ -5,44 +5,36 @@
 {% block title %}Read: {{ article.title }}{% endblock %}
 
 {% block body %}
-    <!-- Article detaile -->
-    <section>
+    <div>
+        <!-- Article images -->
         <div class="jumbotron jumbotron-fluid">
             <img src="{{ asset(article.imagePath) }}" alt="">
-            <div class="container">
-                <h1>{{ article.title }}</h1>
-            </div>
         </div>
-
+        <!-- Article content -->
         <div class="container">
             <div class="row">
-                <div class="col-md-12 p-3">
+                <div class="col-sm-12 p-3">
+                    <h3>{{ article.title }} <small class="text-info"> by {{ article.author }}</small></h3>
+                    <p>
+                        <button class="btn btn-outline-info btn-sm">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</button>
+                        <button class="btn btn-outline-info btn-sm">{{ article.category.title }}</button>
+                    </p>
                     <p>{{ article.content }}</p>
+                    <p class="mb-3">
+                        <span class="pr-1">Share:</span>
+                        <i class="pr-1 fab fa-facebook-square"></i>
+                        <i class="pr-1 fab fa-twitter-square"></i>
+                        <i class="fab fa-instagram"></i>
+                    </p>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <p class="share-icons mb-5"><span class="pr-1">Share:</span> <i class="pr-1 fab fa-facebook-square"></i></i><i class="pr-1 fab fa-twitter-square"></i><i class="fab fa-instagram"></i></p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="container-fluid">
-        <div class="row text-center">
-            <div class="col-md-12 p-3 bg-info">
-                <span class="mr-2">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</span>
-                <span class="mr-2">{{ article.author }}</span>
-                <span>{{ article.category.categoryName }}</span>
             </div>
         </div>
     </div>
-
-    <div class="container mt-5">
+    <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h3><i class="pr-3 fa fa-comment"></i>{{ article.nonDeletedComments|length }} Comments</h3>
+                <h4><i class="pr-3 fa fa-comment"></i>{{ article.nonDeletedComments|length }} Comments</h4>
                 <hr>
-
                 <div class="row mb-5">
                     <div class="col-sm-12">
                         <img class="comment-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">

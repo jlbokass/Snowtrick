@@ -25,9 +25,48 @@ class ArticleRepository extends ServiceEntityRepository
     //  * @return Article[] Returns an array of Article objects
     //  */
 
+    /**
+     * @param null|string $term
+     *
+     * @return Article[]
+     */
+    public function findAllWithSearch(?string $term)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin('a.category', 'c')
+            ->innerJoin('c.author','user')
+            ->addSelect('c')
+            ->addSelect('user')
+        ;
+
+        if ($term) {
+            $qb->andWhere('
+            a.content LIKE :term OR a.author LIKE :term 
+            OR c.title LIKE :term OR c.content LIKE :term
+            OR user.firstName LIKE :term 
+            ')
+                ->setParameter('term', '%'.$term.'%')
+            ;
+        }
+
+        return $qb
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllPublishedOrderedByNewest()
     {
-        return $this->addIsPublishedQueryBuider()
+        return $this->addIsPublishedQueryBuilder()
+            ->orderBy('a.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllNonPublishedOrderedByNewest()
+    {
+        return $this->addIsNotPublishedQueryBuilder()
             ->orderBy('a.publishedAt', 'DESC')
             ->getQuery()
             ->getResult()
@@ -54,10 +93,16 @@ class ArticleRepository extends ServiceEntityRepository
     }
     */
 
-    private function addIsPublishedQueryBuider(QueryBuilder $qb = null)
+    private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
     {
         return $this->getOrCreateQueryBuider($qb)
             ->andWhere('a.publishedAt IS NOT NULL');
+    }
+
+    private function addIsNotPublishedQueryBuilder(QueryBuilder $qb = null)
+    {
+        return $this->getOrCreateQueryBuider($qb)
+            ->andWhere('a.publishedAt IS NULL');
     }
 
     private function getOrCreateQueryBuider(QueryBuilder $qb = null)

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -47,4 +48,59 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param null|string $term
+     *
+     * @return Category[]
+     */
+    public function findAllWithSearch(?string $term)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.articles', 'a')
+            ->innerJoin('c.author', 'user')
+            ->addSelect('a')
+            ->addSelect('user');
+
+        if ($term) {
+            $qb->andWhere('
+            c.content LIKE :term OR c.author LIKE :term 
+            OR a.title LIKE :term OR a.content LIKE :term
+            OR user.firstName LIKE:term 
+            ')
+                ->setParameter('term', '%'.$term.'%')
+            ;
+        }
+
+        return $qb
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllPublishedOrderedByNewest()
+    {
+        return $this->addIsPublishedQueryBuilder()
+            ->orderBy('c.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
+    {
+        return $this->getOrCreateQueryBuider($qb)
+            ->andWhere('c.publishedAt IS NOT NULL');
+    }
+
+    private function addIsNotPublishedQueryBuilder(QueryBuilder $qb = null)
+    {
+        return $this->getOrCreateQueryBuider($qb)
+            ->andWhere('a.publishedAt IS NULL');
+    }
+
+    private function getOrCreateQueryBuider(QueryBuilder $qb = null)
+    {
+        return $qb ? : $this->createQueryBuilder('c');
+    }
 }

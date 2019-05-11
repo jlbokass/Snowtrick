@@ -24,12 +24,28 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $categoryName;
+    private $title;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="category")
      */
     private $articles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="categories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $content;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $publishedAt;
 
     public function __construct()
     {
@@ -41,14 +57,14 @@ class Category
         return $this->id;
     }
 
-    public function getCategoryName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->categoryName;
+        return $this->title;
     }
 
-    public function setCategoryName(string $categoryName): self
+    public function setTitle(string $title): self
     {
-        $this->categoryName = $categoryName;
+        $this->title = $title;
 
         return $this;
     }
@@ -80,6 +96,42 @@ class Category
                 $article->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeInterface
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(?\DateTimeInterface $publishedAt): self
+    {
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
