@@ -7,11 +7,10 @@
     <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-sm-12">
-                <div class="{% block content_class %}p-3 mt-4 shadow{% endblock %}">
+                <div class="p-3 mt-4 shadow">
                     {% block content_body %}
 
                         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                            <a class="navbar-brand" href="#">Admin</a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
@@ -19,16 +18,16 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Article</a>
+                                        <a class="nav-link" href="{{ path('admin_article_index') }}">Article</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Category</a>
+                                        <a class="nav-link" href="{{ path('admin_category_index') }}">Category</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">User</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Comment</a>
+                                        <a class="nav-link" href="{{ path('comment_admin') }}">Comment</a>
                                     </li>
                                 </ul>
                             </div>
@@ -37,7 +36,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h3 class="mt-5">{% block manager_name %}{% endblock %}</h3>
-
+                            <span class="float-right mb-3">{% block add %}{% endblock %}</span>
                             <form>
                                 <div class="input-group mb-3">
                                     <input type="text"
