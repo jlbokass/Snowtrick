@@ -8,18 +8,23 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryAdminController extends AbstractController
 {
     /**
      * @Route("/admin/category/index", name="admin_category_index")
+     *
+     * @param CategoryRepository $categoryRepository
+     * @param Request $request
+     * @return Response
      */
-    public function index(CategoryRepository $categoryRepository, Request $request)
+    public function index(CategoryRepository $categoryRepository, Request $request): Response
     {
         $q = $request->query->get('q');
 
-        $categories = $categoryRepository->findAllWithSearch($q);
+        $categories = $categoryRepository->findAllPublishedOrderedByNewest();
 
         return $this->render('category_admin/index.html.twig', [
             'categories' => $categories,
@@ -28,10 +33,11 @@ class CategoryAdminController extends AbstractController
 
     /**
      * @Route("admin/category/new", name="add_category")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @return Response
      */
-    public function new(EntityManagerInterface $manager, Request $request)
+    public function new(EntityManagerInterface $manager, Request $request): Response
     {
         $form = $this->createForm(CategoryType::class);
         $form->handleRequest($request);
@@ -39,12 +45,11 @@ class CategoryAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $category = $form->getData();
-            $category->setAuthor($this->getUser());
-            dd($category);
             $title = $category->getTitle();
 
             $manager->persist($category);
             $manager->flush();
+
             $this->addFlash(
                 'success',
                 'the category '.$title.'was added'
@@ -53,10 +58,40 @@ class CategoryAdminController extends AbstractController
             return $this->redirectToRoute('admin_category_index');
         }
 
-
         return $this->render('category_admin/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
 
+    /**
+     * @Route("/admin/category/edit/{id}", name="edit_category")
+     *
+     * @param Category $category
+     * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Category $category, EntityManagerInterface $manager, Request $request): Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $form->getData();
+
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Edit success'
+            );
+
+            return $this->redirectToRoute('admin_category_index');
+        }
+
+        return $this->render('category_admin/edit.html.twig', [
+            'category' => $category,
+            'form' => $form->createView(),
+        ]);
     }
 }

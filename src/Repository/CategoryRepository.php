@@ -58,15 +58,13 @@ class CategoryRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.articles', 'a')
-            ->innerJoin('c.author', 'user')
-            ->addSelect('a')
-            ->addSelect('user');
+            ->addSelect('a');
+            //->addSelect('user');
 
         if ($term) {
             $qb->andWhere('
             c.content LIKE :term OR c.author LIKE :term 
             OR a.title LIKE :term OR a.content LIKE :term
-            OR user.firstName LIKE:term 
             ')
                 ->setParameter('term', '%'.$term.'%')
             ;

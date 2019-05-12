@@ -15,10 +15,7 @@
             <div class="row">
                 <div class="col-sm-12 p-3">
                     <h3>{{ article.title }} <small class="text-info"> by {{ article.author }}</small></h3>
-                    <p>
-                        <button class="btn btn-outline-info btn-sm">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</button>
-                        <button class="btn btn-outline-info btn-sm">{{ article.category.title }}</button>
-                    </p>
+
                     <p>{{ article.content }}</p>
                     <p class="mb-3">
                         <span class="pr-1">Share:</span>
@@ -27,6 +24,16 @@
                         <i class="fab fa-instagram"></i>
                     </p>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <p>
+                    <button class="btn btn-outline-dark btn-sm">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</button>
+                    <button class="btn btn-outline-dark btn-sm">Category: <span class="text-primary">{{ article.category.title }}</span></button>
+                </p>
             </div>
         </div>
     </div>

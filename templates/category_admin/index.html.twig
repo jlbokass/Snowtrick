@@ -1,5 +1,9 @@
 {% extends 'base_admin.html.twig' %}
 
+{% block title %}
+    Admin category
+{% endblock %}
+
 {% block manager_name %}
     Manage Category
 {% endblock %}
@@ -25,13 +29,23 @@
                 </a>
             </td>
             <td>
-                {{ category.author.firstName }}
+                {{ category.author }}
             </td>
             <td style="width: 20%">
                 {{ category.content|truncate }}
             </td>
             <td>
                 {{ category.createdAt|time_diff }}
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-warning" onclick="javascritp:location.href='{{ path('edit_category', {id: category.id}) }}'">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
             </td>
         </tr>
     {% else %}

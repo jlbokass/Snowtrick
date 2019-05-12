@@ -34,9 +34,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->innerJoin('a.category', 'c')
-            ->innerJoin('c.author','user')
             ->addSelect('c')
-            ->addSelect('user')
         ;
 
         if ($term) {

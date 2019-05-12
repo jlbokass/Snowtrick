@@ -24,18 +24,6 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/articles", name="app_articles")
-     */
-    public function article(ArticleRepository $articleRepository)
-    {
-        $articles = $articleRepository->findAllPublishedOrderedByNewest();
-
-        return $this->render('article/article.html.twig', [
-            'articles' => $articles
-        ]);
-    }
-
-    /**
      * @Route("/news/{slug}", name="article_show")
      */
     public function show(Article $article)
