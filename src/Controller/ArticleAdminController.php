@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,17 +32,84 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/article/new")
+     * @Route("/admin/article/new", name="add_article")
+     *
+     * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @return Response
      */
-    public function new(EntityManagerInterface $manager)
+    public function new(EntityManagerInterface $manager, Request $request): Response
     {
-       die('todo');
+        $form = $this->createForm(ArticleType::class);
+        $form->handleRequest($request);
 
-        return new Response(sprintf(
-            'Hiya! new Article id: #%d slug: %s',
-            $article->getId(),
-            $article->getSlug()
-        ));
+        if ($form->isSubmitted() && $form->isValid()) {
 
+            $article = $form->getData();
+            $title = $article->getTitle();
+
+            $manager->persist($article);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'the article '.$title.'was added'
+            );
+
+            return $this->redirectToRoute('admin_article_index');
+        }
+
+        return $this->render('article_admin/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Route("/admin/article/edit/{id}", name="edit_article", requirements={"id"="\d+"})
+     *
+     * @param Article $article
+     * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Article $article, EntityManagerInterface $manager, Request $request): Response
+    {
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $article = $form->getData();
+
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Article added'
+            );
+
+            return $this->redirectToRoute('admin_article_index');
+        }
+
+        return $this->render('article_admin/edit.html.twig', [
+            'article' => $article,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/article/delete/{id}", name="delete_article", requirements={"id"="\d+"})
+     *
+     * @param Article $article
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function delete(Article $article, EntityManagerInterface $manager): Response
+    {
+        $manager->remove($article);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_article_index');
     }
 }

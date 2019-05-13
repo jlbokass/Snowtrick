@@ -1,0 +1,17 @@
+{% extends 'content_base.html.twig' %}
+
+{% block manager_name %}
+    Edit an article
+{% endblock %}
+
+{% block content_body %}
+    <h1>Add a category</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            {% include 'article_admin/form.html.twig' %}
+            <button type="submit" class="btn btn-success">Edit</button>
+            <button type="submit" class="btn btn-info">Back to admin</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

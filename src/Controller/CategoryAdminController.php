@@ -33,6 +33,7 @@ class CategoryAdminController extends AbstractController
 
     /**
      * @Route("admin/category/new", name="add_category")
+     *
      * @param EntityManagerInterface $manager
      * @param Request $request
      * @return Response
@@ -64,7 +65,7 @@ class CategoryAdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/category/edit/{id}", name="edit_category")
+     * @Route("/admin/category/edit/{id}", name="edit_category", requirements={"id"="\d+"})
      *
      * @param Category $category
      * @param EntityManagerInterface $manager
@@ -77,7 +78,7 @@ class CategoryAdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->getData();
+            $category = $form->getData();
 
             $manager->flush();
 
@@ -93,5 +94,21 @@ class CategoryAdminController extends AbstractController
             'category' => $category,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/admin/category/delete/{id}", name="delete_category", requirements={"id"="\d+"})
+     *
+     * @param Category $category
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function delete(Category $category, EntityManagerInterface $manager): Response
+    {
+
+        $manager->remove($category);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_category_index');
     }
 }

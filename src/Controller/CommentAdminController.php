@@ -22,4 +22,5 @@ class CommentAdminController extends AbstractController
             'comments' => $comments,
         ]);
     }
+
 }

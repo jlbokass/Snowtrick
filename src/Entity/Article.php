@@ -69,6 +69,7 @@ class Article
 
     public function __construct()
     {
+        $this->author = 'john Bokassa';
         $this->comments = new ArrayCollection();
     }
 

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1 class="h3 mb-3 font-weight-normal">Registration</h1>
+
+    {{ form_start() }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.password) }}
+
+        <button class="btn btn-lg btn-primary" type="submit">
+            Register
+        </button>
+    {{ form_end() }}
+{% endblock %}
