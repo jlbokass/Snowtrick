@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block body %}
+    {# read and display just one flash message type #}
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h1 class="h3 mb-3 font-weight-normal">Registration</h1>
 
     {{ form_start() }}
