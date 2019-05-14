@@ -3,14 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ArticleAdminController
+ * @package App\Controller
+ *
+ * @IsGranted("ROLE_USER")
+ */
 class ArticleAdminController extends AbstractController
 {
     /**
@@ -46,6 +54,8 @@ class ArticleAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $article = $form->getData();
+            $user = $this->getUser();
+            $article->setUser($user);
             $title = $article->getTitle();
 
             $manager->persist($article);

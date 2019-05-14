@@ -2,7 +2,7 @@
 
 
 
-{% block title %}Hello from homepage{% endblock %}
+{% block title %}Welcome to Snowtrick{% endblock %}
 
 {% block body %}
     <!-- Fullscreen image -->
@@ -31,18 +31,20 @@
                             <div>
                                 <h5 class="card-title"><a href="{{ path('article_show', {slug: article.slug}) }}">{{ article.title }}</a></h5>
                             </div>
-                            <div class="ml-auto d-flex align-items-baseline">
-                                <div class="mr-2">
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
+                            {% if is_granted('ROLE_USER') %}
+                                <div class="ml-auto d-flex align-items-baseline">
+                                    <div class="mr-2">
+                                        <button class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
