@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\User;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -76,6 +77,7 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
             ->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
 
         $article->setCategory($this->getRandomReference(Category::class));
+        $article->setUser($this->getRandomReference(User::class));
 
     });
 
@@ -85,6 +87,7 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            UserFixture::class,
             CategoryFixtures::class,
         ];
     }

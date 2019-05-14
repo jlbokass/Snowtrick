@@ -20,6 +20,9 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -78,24 +81,25 @@ class SecurityController extends AbstractController
     /**
      * @Route("/confirmation/{token}", name="token_validation")
      *
-     * @param ApiToken $token
+     * @param $token
+     * @param ApiTokenRepository $repository
      * @param EntityManagerInterface $manager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function validateToken(
-        $token,
-        ApiTokenRepository $apiTokenRepository,
-        EntityManagerInterface $manager)
+    public function validateToken($token,ApiTokenRepository $repository, EntityManagerInterface $manager): Response
     {
-        $token = $apiTokenRepository->findOneBy(['token' => $token]);
-
-        //dd($token);
-
-        if(null === $token) {
-            throw new NotFoundHttpException();
-        }
+        $token = $repository->findOneBy(['token' => $token]);
 
         $user = $token->getUser();
+
+        if ($user->getIsEnable()) {
+            $this->addFlash(
+                'notice',
+                'you are register yet'
+            );
+
+            return $this->redirectToRoute('app_login');
+        }
 
         if ($token->getExpiresAt()) {
 
@@ -112,7 +116,6 @@ class SecurityController extends AbstractController
 
         }
 
-        $manager->remove($user);
         $manager->remove($token);
         $manager->flush();
 

@@ -46,6 +46,12 @@ class Category
      */
     private $author = 'John Bokassa';
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="category")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -134,6 +140,18 @@ class Category
     public function setAuthor(string $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

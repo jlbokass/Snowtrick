@@ -42,16 +42,19 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Contact</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Profile
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">add a Trick</a>
-                    <a class="dropdown-item" href="#">profile</a>
-                    <a class="dropdown-item" href="#">log out</a>
-                </div>
-            </li>
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('add_article') }}">add a Trick</a>
+                        <a class="dropdown-item" href="#">profile</a>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">log out</a>
+                    </div>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
@@ -60,7 +63,11 @@
 <!-- Footer -->
 <footer class="bg-dark py-3">
     <div class="container">
-        <div class="small text-center text-muted">Copyright &copy; 2019 - John Bokassa</div>
+        <div class="small text-center text-muted">Copyright &copy; 2019 - John Bokassa.
+            {% if is_granted('ROLE_ADMIN') %}
+            <span><a href="{{ path('admin_article_index') }}">Admin</a></span>
+            {% endif %}
+        </div>
     </div>
 </footer>
 
