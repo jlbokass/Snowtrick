@@ -41,7 +41,7 @@ class Comment
     private $isDeleted = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comment")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

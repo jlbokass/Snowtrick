@@ -68,7 +68,7 @@ class Article
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="article")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

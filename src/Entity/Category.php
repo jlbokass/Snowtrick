@@ -47,7 +47,7 @@ class Category
     private $author = 'John Bokassa';
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="category")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="categories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

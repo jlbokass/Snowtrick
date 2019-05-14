@@ -62,7 +62,7 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
 
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(Article::class,17, function (Article $article) {
+        $this->createMany(Article::class,17, function (Article $article) use ($manager) {
 
         $article->setTitle($this->faker->unique()->randomElement(self::$articleTitle))
             ->setContent($this->faker->paragraph(10, true));
@@ -76,8 +76,17 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
         $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
             ->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
 
-        $article->setCategory($this->getRandomReference(Category::class));
-        $article->setUser($this->getRandomReference(User::class));
+        /** @var Category[] $category */
+        $category = $this->getRandomReferences(Category::class, $this->faker->numberBetween(1,5));
+        foreach ($category as $category) {
+            $article->setCategory($category);
+        }
+
+        /** @var User[] $user */
+        $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,4));
+        foreach ($user as $user) {
+            $article->setUser($user);
+        }
 
     });
 
