@@ -51,6 +51,9 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="dropdown-item" href="{{ path('admin_article_index') }}">Admin</a>
+                        {% endif %}
                         <a class="dropdown-item" href="{{ path('add_article') }}">add a Trick</a>
                         <a class="dropdown-item" href="#">profile</a>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">log out</a>
