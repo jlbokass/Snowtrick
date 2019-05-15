@@ -17,12 +17,21 @@ class CommentFixture extends BaseFixture implements DependentFixtureInterface
                $this->faker->boolean ? $this->faker->paragraph : $this->faker->sentences(2, true)
            );
 
-           $comment->setAuthorName($this->faker->name);
            $comment->setCreatedAt($this->faker->dateTimeBetween('-1 months', '-1 seconds'));
            $comment->setIsDeleted($this->faker->boolean(20));
 
-           $comment->setArticle($this->getRandomReference(Article::class));
-           $comment->setUser($this->getRandomReference(User::class));
+            /** @var User[] $user */
+            $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,4));
+            foreach ($user as $user) {
+                $comment->setUser($user);
+            }
+
+            /** @var Article[] $user */
+            $article = $this->getRandomReferences(Article::class, $this->faker->numberBetween(1,4));
+            foreach ($article as $article) {
+                $comment->setArticle($article);
+            }
+
         });
 
         $manager->flush();

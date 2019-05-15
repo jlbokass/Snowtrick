@@ -73,8 +73,8 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
             $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
         }
 
-        $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
-            ->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
+        //$article->setUser($this->getRandomReference(User::class))
+            $article->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
 
         /** @var Category[] $category */
         $category = $this->getRandomReferences(Category::class, $this->faker->numberBetween(1,5));

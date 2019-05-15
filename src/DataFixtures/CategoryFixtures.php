@@ -25,7 +25,6 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
             $category->setTitle($this->faker->unique()->randomElement(self::$categoryTitle));
             $category->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $category->setContent($this->faker->unique()->paragraph);
-            $category->setAuthor($this->faker->name);
 
             // publish most articles
             if ($this->faker->boolean(90)) {
@@ -33,7 +32,13 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
                 $category->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             }
 
-            $category->setUser($this->getRandomReference(User::class));
+           // $category->setUser($this->getRandomReference(User::class));
+
+            /** @var User[] $user */
+            $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,4));
+            foreach ($user as $user) {
+                $category->setUser($user);
+            }
         });
 
         $manager->flush();

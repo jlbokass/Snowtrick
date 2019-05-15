@@ -53,17 +53,10 @@ class CategoryAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $category = $form->getData();
-            $title = $category->getTitle();
-
             $manager->persist($category);
             $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'the category '.$title.'was added'
-            );
-
-            return $this->redirectToRoute('admin_category_index');
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('category_admin/new.html.twig', [
@@ -81,11 +74,12 @@ class CategoryAdminController extends AbstractController
      */
     public function edit(Category $category, EntityManagerInterface $manager, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $category);
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $category = $form->getData();
 
             $manager->flush();
 
@@ -94,7 +88,7 @@ class CategoryAdminController extends AbstractController
                 'Edit success'
             );
 
-            return $this->redirectToRoute('admin_category_index');
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('category_admin/edit.html.twig', [
@@ -112,10 +106,11 @@ class CategoryAdminController extends AbstractController
      */
     public function delete(Category $category, EntityManagerInterface $manager): Response
     {
+        $this->denyAccessUnlessGranted('DELETE', $category);
 
         $manager->remove($category);
         $manager->flush();
 
-        return $this->redirectToRoute('admin_category_index');
+        return $this->redirectToRoute('app_homepage');
     }
 }

@@ -56,17 +56,12 @@ class ArticleAdminController extends AbstractController
             $article = $form->getData();
             $user = $this->getUser();
             $article->setUser($user);
-            $title = $article->getTitle();
+            $article->setImageFilename('snow22.jpg');
 
             $manager->persist($article);
             $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'the article '.$title.'was added'
-            );
-
-            return $this->redirectToRoute('admin_article_index');
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('article_admin/new.html.twig', [
@@ -85,21 +80,16 @@ class ArticleAdminController extends AbstractController
      */
     public function edit(Article $article, EntityManagerInterface $manager, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $article);
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $article = $form->getData();
-
             $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'Article added'
-            );
-
-            return $this->redirectToRoute('admin_article_index');
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('article_admin/edit.html.twig', [
@@ -117,9 +107,11 @@ class ArticleAdminController extends AbstractController
      */
     public function delete(Article $article, EntityManagerInterface $manager): Response
     {
+        $this->denyAccessUnlessGranted('DELETE', $article);
+
         $manager->remove($article);
         $manager->flush();
 
-        return $this->redirectToRoute('admin_article_index');
+        return $this->redirectToRoute('app_homepage');
     }
 }

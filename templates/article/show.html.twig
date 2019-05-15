@@ -7,14 +7,18 @@
 {% block body %}
     <div>
         <!-- Article images -->
-        <div class="jumbotron jumbotron-fluid">
-            <img src="{{ asset(article.imagePath) }}" alt="">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <img src="{{ asset(article.imagePath) }}" alt="">
+                </div>
+            </div>
         </div>
         <!-- Article content -->
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 p-3">
-                    <h3>{{ article.title }} <small class="text-info"> by {{ article.author }}</small></h3>
+                    <h3>{{ article.title }} <small class="text-info"> by {{ article.user.username }}</small></h3>
 
                     <p>{{ article.content }}</p>
                     <p class="mb-3">
@@ -60,7 +64,7 @@
                         <div class="col-sm-12">
                             <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
                             <div class="comment-container d-inline-block pl-3 align-top">
-                                <span class="commenter-name">{{ comment.authorName }}</span>
+                                <span class="commenter-name">{{ comment.user.username }}</span>
                                 <small>{{ comment.createdAt|time_diff }}</small>
                                 {% if comment.isDeleted %}
                                     <i class="fas fa-times"></i> deleted
