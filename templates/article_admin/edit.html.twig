@@ -1,11 +1,17 @@
 {% extends 'content_base.html.twig' %}
 
 {% block manager_name %}
-    Edit an article
+    Add an article
 {% endblock %}
 
 {% block content_body %}
     <h1>Add a category</h1>
+
+    <form action="{{ path('upload_test') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="image">
+        <button type="submit" class="btn btn-primary">Upload!</button>
+    </form>
+
     <div class="row">
         <div class="col-sm-6">
             {% include 'article_admin/form.html.twig' %}

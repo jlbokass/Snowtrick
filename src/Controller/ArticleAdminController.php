@@ -99,6 +99,14 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/upload/test", name="upload_test")
+     */
+    public function temporaryUploadAction(Request $request)
+    {
+        dd($request->files->get('image'));
+    }
+
+    /**
      * @Route("/admin/article/delete/{id}", name="delete_article", requirements={"id"="\d+"})
      *
      * @param Article $article
