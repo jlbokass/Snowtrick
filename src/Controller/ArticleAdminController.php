@@ -7,8 +7,10 @@ use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -103,7 +105,17 @@ class ArticleAdminController extends AbstractController
      */
     public function temporaryUploadAction(Request $request)
     {
-        dd($request->files->get('image'));
+        /** @var UploadedFile $uploadFile */
+        $uploadFile =$request->files->get('image');
+        $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+
+        $originalFilemname = pathinfo($uploadFile->getClientOriginalName(),PATHINFO_FILENAME);
+
+        $newFilename = Urlizer::urlize($originalFilemname) .'-'. uniqid().'.'.$uploadFile->guessExtension();
+
+        dd($uploadFile->move(
+            $destination,
+            $newFilename));
     }
 
     /**

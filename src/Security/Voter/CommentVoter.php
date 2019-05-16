@@ -25,20 +25,21 @@ class CommentVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'EDIT':
-                if ($comment->getUser() === $user) {
+                if($comment->getUser() === $user) {
                     return true;
                 }
                 break;
             case 'DELETE':
-                if ($comment->getUser() === $user) {
+                if($comment->getUser() === $user) {
                     return true;
-                    break;
                 }
-
-                return false;
+                break;
         }
+
+        return false;
+
     }
+}
