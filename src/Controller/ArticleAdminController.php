@@ -66,6 +66,7 @@ class ArticleAdminController extends AbstractController
                 $newFilename = $uploaderHelper->uploadArticleImage($uploadedFile);
                 $article->setImageFilename($newFilename);
             }
+
             $user = $this->getUser();
             $article->setUser($user);
 
