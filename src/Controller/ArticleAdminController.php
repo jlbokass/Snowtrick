@@ -51,15 +51,15 @@ class ArticleAdminController extends AbstractController
      */
     public function new(EntityManagerInterface $manager, Request $request, UploaderHelper $uploaderHelper): Response
     {
-        $form = $this->createForm(ArticleType::class);
-        $form->handleRequest($request);
+        $articleForm = $this->createForm(ArticleType::class);
+        $articleForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
-            $article = $form->getData();
+            $article = $articleForm->getData();
 
             /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['imageFile']->getData();
+            $uploadedFile = $articleForm['imageFile']->getData();
 
             if ($uploadedFile) {
 
@@ -77,7 +77,7 @@ class ArticleAdminController extends AbstractController
         }
 
         return $this->render('article_admin/new.html.twig', [
-            'form' => $form->createView(),
+            'articleForm' => $articleForm->createView(),
         ]);
 
     }
