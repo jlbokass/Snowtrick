@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Image;
 use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
@@ -65,8 +66,11 @@ class ArticleAdminController extends AbstractController
 
                 foreach ($uploadedFiles as $uploadedFile) {
 
+                    $image = new Image();
                     $newFilename = $uploaderHelper->uploadArticleImage($uploadedFile);
-                    $article->setImageFilename($newFilename);
+                    $image->setImageFilename($newFilename);
+                    $image->setArticle($article);
+                    $article->addImage($image);
                 }
 
             }
