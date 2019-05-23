@@ -58,13 +58,17 @@ class ArticleAdminController extends AbstractController
 
             $article = $articleForm->getData();
 
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $articleForm['imageFile']->getData();
+            /** @var UploadedFile $uploadedFiles */
+            $uploadedFiles = $articleForm['imageFiles']->getData();
 
-            if ($uploadedFile) {
+            if ($uploadedFiles) {
 
-                $newFilename = $uploaderHelper->uploadArticleImage($uploadedFile);
-                $article->setImageFilename($newFilename);
+                foreach ($uploadedFiles as $uploadedFile) {
+
+                    $newFilename = $uploaderHelper->uploadArticleImage($uploadedFile);
+                    $article->setImageFilename($newFilename);
+                }
+
             }
 
             $user = $this->getUser();
@@ -94,13 +98,13 @@ class ArticleAdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('EDIT', $article);
 
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
+        $articleForm = $this->createForm(ArticleType::class, $article);
+        $articleForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
         /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['imageFile']->getData();
+            $uploadedFile = $articleForm['imageFile']->getData();
 
             if ($uploadedFile) {
 
@@ -118,7 +122,7 @@ class ArticleAdminController extends AbstractController
 
         return $this->render('article_admin/edit.html.twig', [
             'article' => $article,
-            'form' => $form->createView()
+            'articleForm' => $articleForm->createView()
         ]);
     }
 

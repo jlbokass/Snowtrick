@@ -33,15 +33,11 @@ class ArticleType extends AbstractType
                 'label' => 'Category: ',
                 'required' => true,
             ])
-            ->add('imageFile', FileType::class, [
+            ->add('imageFiles', FileType::class, [
                 'label' => 'Image(s): ',
                 'mapped' => false,
                 'required' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '200k'
-                    ])
-                ]
+                'multiple' => true,
             ])
         ;
     }
