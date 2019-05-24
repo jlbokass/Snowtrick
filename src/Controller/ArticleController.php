@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -29,8 +31,17 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/news/{slug}", name="article_show")
+     *
+     * @param Article $article
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
      */
-    public function show(Article $article, Request $request, EntityManagerInterface $manager)
+    public function show(
+        Article $article,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response
     {
         $form = $this->createForm(CommentType::class);
         $form->handleRequest($request);
@@ -41,7 +52,7 @@ class ArticleController extends AbstractController
             $comment = $form->getData();
             $comment->setArticle($article);
             $comment->setUser($this->getUser());
-            //dd($comment);
+
             $manager->persist($comment);
             $manager->flush();
 

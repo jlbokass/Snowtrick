@@ -148,6 +148,13 @@ class Article
         return 'uploads/article_image/'.$this->getImageFilename();
     }
 
+    public function getFirstImagePath(): string
+    {
+        /** @var Image $image */
+        $image = $this->getImages()->first();
+        return 'uploads/article_image/'.$image->getImageFilename();
+    }
+
     /**
      * @return Collection|Comment[]
      */
