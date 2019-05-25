@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,11 +34,11 @@ class ArticleType extends AbstractType
                 'label' => 'Category: ',
                 'required' => true,
             ])
-            ->add('imageFiles', FileType::class, [
-                'label' => 'Image(s): ',
-                'mapped' => false,
-                'required' => false,
-                'multiple' => true,
+            ->add('images', CollectionType::class, [
+                'entry_type' =>ImageType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+                'label' => false,
             ])
         ;
     }

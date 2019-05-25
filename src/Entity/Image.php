@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
@@ -20,6 +22,11 @@ class Image
      * @ORM\Column(type="string", length=255)
      */
     private $imageFilename;
+
+    /**
+     * @Assert\File(mimeTypes={ "application/pdf" })
+     */
+    private $file;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Article", inversedBy="images")
@@ -54,5 +61,15 @@ class Image
         $this->article = $article;
 
         return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile(UploadedFile $file): void
+    {
+        $this->file = $file;
     }
 }
