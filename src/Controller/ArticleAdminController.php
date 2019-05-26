@@ -13,6 +13,7 @@ use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,19 +62,13 @@ class ArticleAdminController extends AbstractController
 
             $attachments = $article->getImages();
 
-            //** @var UploadedFile $uploadedFiles */
-            //$uploadedFiles = $articleForm['images']->getData();
-
             if ($attachments) {
 
                 foreach ($attachments as $attachment) {
 
-                    //$image = new Image();
                     $file = $attachment->getFile();
                     $newFilename = $uploaderHelper->uploadArticleImage($file);
                     $attachment->setImageFilename($newFilename);
-                    //$attachment->setArticle($article);
-                    //$article->addImage($attachment);
                 }
             }
 
@@ -147,5 +142,23 @@ class ArticleAdminController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('app_homepage');
+    }
+
+    /**
+     * @Route("/admin/article/delete/image/{id}",
+     *     name="delete_image",
+     *     methods={"POST"},
+     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
+     *
+     * @param Image $image
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function deleteImage(Image $image, EntityManagerInterface $manager): Response
+    {
+        $manager->remove($image);
+        $manager->flush();
+
+        return new JsonResponse();
     }
 }

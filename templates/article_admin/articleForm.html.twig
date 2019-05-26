@@ -12,10 +12,14 @@
     {{ form_row(articleForm.category) }}
 </div>
 
-<div class="form-group">
+<div class="form-group imageArea">
     {{ form_row(articleForm.images, {
         attr: {
             'placeholder': 'Select an image'
         }
     }) }}
+
+    {% if articleForm.vars.value.id is defined %}
+        <a href="" class="delete-image btn btn-danger">Delete</a>
+    {% endif %}
 </div>
