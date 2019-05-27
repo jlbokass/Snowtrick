@@ -154,7 +154,7 @@ class ArticleAdminController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function deleteImage(Image $image, EntityManagerInterface $manager): Response
+    public function deleteImage(Image $image, EntityManagerInterface $manager)
     {
         $manager->remove($image);
         $manager->flush();
