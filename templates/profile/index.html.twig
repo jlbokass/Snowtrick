@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row mt-5">
+            <div class="col-sm-12 mt-5">
+                <ul>
+                    <li><p><strong>Username: </strong>{{ app.user.username }}</p></li>
+                    <li><p><strong>Email: </strong>{{ app.user.email }}</p></li>
+                </ul>
+                <a href="" class="btn btn-warning mb-5">Edit your profile</a>
+                <a href="" class="btn btn-danger mb-5">delete your profile</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
