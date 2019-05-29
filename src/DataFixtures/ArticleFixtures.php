@@ -53,16 +53,13 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
         'snow19.jpg',
     ];
 
-    private static $articleAuthors = [
-      'Black Panther',
-      'Thor the God',
-      'Hulk the Monster',
-      'Black Window',
+    private static $articleContents = [
+
     ];
 
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(Article::class,17, function (Article $article) use ($manager) {
+        $this->createMany(Article::class,17, function (Article $article) {
 
         $article->setTitle($this->faker->unique()->randomElement(self::$articleTitle))
             ->setContent($this->faker->paragraph(10, true));
@@ -73,18 +70,19 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
             $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
         }
 
-        //$article->setUser($this->getRandomReference(User::class))
-            $article->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
-
         /** @var Category[] $category */
-        $category = $this->getRandomReferences(Category::class, $this->faker->numberBetween(1,5));
+        $category = $this->getRandomReferences(Category::class, $this->faker->numberBetween(1,6));
+
         foreach ($category as $category) {
+
             $article->setCategory($category);
         }
 
         /** @var User[] $user */
-        $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,4));
+        $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,2));
+
         foreach ($user as $user) {
+
             $article->setUser($user);
         }
 

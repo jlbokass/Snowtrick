@@ -13,16 +13,18 @@ class CommentFixture extends BaseFixture implements DependentFixtureInterface
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Comment::class, 100, function (Comment $comment) {
+
            $comment->setContent(
-               $this->faker->boolean ? $this->faker->paragraph : $this->faker->sentences(2, true)
+               $this->faker->boolean ? $this->faker->paragraph : $this->faker->sentences(4, true)
            );
 
            $comment->setCreatedAt($this->faker->dateTimeBetween('-1 months', '-1 seconds'));
-           $comment->setIsDeleted($this->faker->boolean(20));
 
             /** @var User[] $user */
-            $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,4));
+            $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,2));
+
             foreach ($user as $user) {
+
                 $comment->setUser($user);
             }
 

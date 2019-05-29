@@ -29,16 +29,6 @@ class Category
     private $articles;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $publishedAt;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     protected $createdAt;
@@ -104,30 +94,6 @@ class Category
                 $article->setCategory(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getPublishedAt(): ?\DateTimeInterface
-    {
-        return $this->publishedAt;
-    }
-
-    public function setPublishedAt(?\DateTimeInterface $publishedAt): self
-    {
-        $this->publishedAt = $publishedAt;
 
         return $this;
     }

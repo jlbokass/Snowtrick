@@ -38,6 +38,11 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    private $username = '';
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\ApiToken", mappedBy="user")
      */
     private $apiTokens;
@@ -61,11 +66,6 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", cascade={"remove"})
      */
     private $comments;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
-     */
-    private $username = '';
 
     public function __construct()
     {
@@ -99,7 +99,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->username;
     }
 
     /**

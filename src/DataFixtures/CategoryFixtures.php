@@ -24,19 +24,12 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
 
             $category->setTitle($this->faker->unique()->randomElement(self::$categoryTitle));
             $category->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            $category->setContent($this->faker->unique()->paragraph);
-
-            // publish most articles
-            if ($this->faker->boolean(90)) {
-
-                $category->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            }
-
-           // $category->setUser($this->getRandomReference(User::class));
 
             /** @var User[] $user */
-            $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,4));
+            $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,2));
+
             foreach ($user as $user) {
+
                 $category->setUser($user);
             }
         });
