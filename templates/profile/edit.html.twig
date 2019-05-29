@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Edit your profile
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+
+
+{% block body %}
+    <div class="container form-signin mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 class="h3 mb-3 font-weight-normal">Edit your profile</h1>
+                        {% include 'profile/profileForm.html.twig' %}
+
+                        <button class="btn btn-warning">Edit</button>
+                        <button type="reset" class="btn btn-info" onclick="javascritp:location.href='{{ path('profile_show') }}'">Cancel</button>
+                        {{ form_end(profileForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

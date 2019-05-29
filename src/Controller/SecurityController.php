@@ -121,7 +121,7 @@ class SecurityController extends AbstractController
 
         $this->addFlash(
             'notice',
-            'date experires'
+            'date expired'
         );
 
         return $this->redirectToRoute('app_login');

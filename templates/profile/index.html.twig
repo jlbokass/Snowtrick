@@ -5,15 +5,22 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <div class="row mt-5">
-            <div class="col-sm-12 mt-5">
-                <ul>
-                    <li><p><strong>Username: </strong>{{ app.user.username }}</p></li>
-                    <li><p><strong>Email: </strong>{{ app.user.email }}</p></li>
-                </ul>
-                <a href="" class="btn btn-warning mb-5">Edit your profile</a>
-                <a href="" class="btn btn-danger mb-5">delete your profile</a>
+    <div class="container form-signin mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 class="h3 mb-3 font-weight-normal">Your profile</h1>
+
+                        <ul>
+                            <li><p><strong>Username: </strong>{{ app.user.username }}</p></li>
+                            <li><p><strong>Email: </strong>{{ app.user.email }}</p></li>
+                        </ul>
+                        <button class="btn btn-warning">Edit</button>
+                        <button class="btn btn-info">Password</button>
+                        <button type="reset" class="btn btn-danger" onclick="javascritp:location.href='{{ path('profile_show') }}'">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
