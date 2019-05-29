@@ -6,15 +6,13 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
 class Article
 {
-    use TimestampableEntity;
 
     /**
      * @ORM\Id()
@@ -25,14 +23,9 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message= " The title cannot be null ")
      */
     private $title;
-
-    /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     * @Gedmo\Slug(fields={"title"})
-     */
-    private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -45,9 +38,14 @@ class Article
     private $publishedAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $imageFilename;
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", fetch="EXTRA_LAZY")
@@ -74,6 +72,7 @@ class Article
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->comments = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
@@ -131,17 +130,27 @@ class Article
         return $this;
     }
 
-    public function getImageFilename(): ?string
+    public function getCreatedAt()
     {
-        return $this->imageFilename;
+        return $this->createdAt;
     }
 
-    public function setImageFilename(?string $imageFilename): self
+    public function setCreatedAt($createdAt): void
     {
-        $this->imageFilename = $imageFilename;
-
-        return $this;
+        $this->createdAt = $createdAt;
     }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+
 
     public function getImagePath()
     {

@@ -1,10 +1,10 @@
 {% block image_widget %}
     {% spaceless %}
-        <div class="keywordArea">
+        <div class="ImageArea">
             {{ block('collection_widget') }}
 
             {% if form.vars.value.id is defined %}
-                <a data-keyword-id="{{ form.vars.value.id }}"
+                <a data-image-id="{{ form.vars.value.id }}"
                    data-delete-path="{{ path('delete_image', {id : form.vars.value.id}) }}"
                    href="#" class="delete-image btn btn-warning">delete</a>
             {% endif %}

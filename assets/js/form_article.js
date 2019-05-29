@@ -6,7 +6,7 @@ $(document).ready(function(){
     // recuprere le nombre d'input keyword
     var index = $container.find(':input').length;
 
-    $container.find('col-form-label').remove();
+    $container.find('col-form-label.required').remove();
 
     // si 0 input Keyword ajoute 1
     if(index == 0) {

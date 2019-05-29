@@ -1,6 +1,8 @@
 {% form_theme articleForm 'article_admin/fields.html.twig' %}
 
-{{ form_start(articleForm) }}
+{{ form_start(articleForm, {'attr': {
+    'novalidate': 'novalidate',
+    }}) }}
 
 <div class="form-group">
     {{ form_row(articleForm.title) }}
@@ -21,7 +23,7 @@
     </div>
 
     {{ form_row(articleForm.images, {
-        attr: {
+        'attr': {
             'placeholder': 'Select an image'
         }
     }) }}
