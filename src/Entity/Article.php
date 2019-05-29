@@ -150,8 +150,6 @@ class Article
         $this->updatedAt = $updatedAt;
     }
 
-
-
     public function getImagePath()
     {
         return 'uploads/article_image/'.$this->getImageFilename();
