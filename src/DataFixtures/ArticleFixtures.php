@@ -31,28 +31,6 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
         'Backside Rodeo',
     ];
 
-    private static $articleImages = [
-        'snow1.jpg',
-        'snow2.jpg',
-        'snow3.jpg',
-        'snow4.jpg',
-        'snow5.jpg',
-        'snow6.jpg',
-        'snow7.jpg',
-        'snow8.jpg',
-        'snow9.jpg',
-        'snow10.jpg',
-        'snow11.jpg',
-        'snow12.jpg',
-        'snow13.jpg',
-        'snow14.jpg',
-        'snow15.jpg',
-        'snow16.jpg',
-        'snow17.jpg',
-        'snow18.jpg',
-        'snow19.jpg',
-    ];
-
     private static $articleContents = [
 
     ];

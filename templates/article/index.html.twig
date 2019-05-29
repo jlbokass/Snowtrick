@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h1 class="mt-5">Share your Passion!</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt voluptates rerum eveniet sapiente repellat esse, doloremque quod recusandae deleniti nostrum assumenda vel beatae sed aut modi nesciunt porro quisquam voluptatem.</p>
+                    <p>Sport will seek fear to dominate it<br>fatigue to triumph over it<br>difficulty in overcoming it</p>
                 </div>
             </div>
             <a href="#section1"> <i class="fas fa-arrow-circle-down fa-2x my-dropdown-button"></i></a>
@@ -27,12 +27,12 @@
             {% for article in articles %}
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
-                        {% if articles.images is defined %}
-                        <img class="card-img-top" src="{{ asset(article.imagePath) }}" alt="test">
-                        {% endif %}
+                        {% for image in article.images.first %}
+                        <img class="card-img-top" src="{{ asset(image.filename) }}" alt="test">
+                        {% endfor %}
                         <div class="card-footer d-flex align-items-baseline">
                             <div>
-                                <h5 class="card-title"><a href="{{ path('article_show', {slug: article.slug}) }}">{{ article.title }}</a></h5>
+                                <h5 class="card-title"><a href="{{ path('article_show', {id: article.id}) }}">{{ article.title }}</a></h5>
                             </div>
                             {% if is_granted('ROLE_USER') %}
                                 <div class="ml-auto d-flex align-items-baseline">

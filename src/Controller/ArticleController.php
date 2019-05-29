@@ -30,7 +30,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/news/{slug}", name="article_show")
+     * @Route("/article/show/{id}", name="article_show")
      *
      * @param Article $article
      * @param Request $request
@@ -57,7 +57,7 @@ class ArticleController extends AbstractController
             $manager->flush();
 
             return $this->redirectToRoute('article_show', [
-                'slug' => $article->getSlug()
+                'id' => $article->getId()
             ]);
         }
 
