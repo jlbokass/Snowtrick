@@ -22,12 +22,16 @@
 <div class="mt-5" id="section1">
     <div class="container" >
         <!-- Page Features -->
-        <div class="row text-center">
+        <div class="row text-center" id="trickList">
 
             {% for article in articles %}
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
-                        <img class="card-img-top" src="{{ asset('uploads/article_image/')~'snow11.jpg' }}" alt="test">
+                            {% if form.image.vars.value.id is defined %}
+                                <img class="card-img-top" src="{{ asset('uploads/article_image/')~form.image.value.ImageFilename }}" alt="test">
+                            {% else %}
+                                <img class="card-img-top" src="{{ asset('uploads/article_image/')~'snow11.jpg' }}" alt="test">
+                            {% endif %}
                         <div class="card-footer d-flex align-items-baseline">
                             <div>
                                 <h5 class="card-title"><a href="{{ path('article_show', {id: article.id}) }}">{{ article.title }}</a></h5>
@@ -81,6 +85,48 @@
                 </div>
             {% endfor %}
         </div>
+
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <button id="loadMoreTricks" class="btn btn-primary">Voir plus de tricks</button>
+            </div>
+        </div>
+        <a href="#tricks"><i id="arrow-up" class="fas fa-arrow-up fa-2x float-right"></i></a>
+
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        $("#arrow-up").hide();
+        click = 0;
+        function loadMoreTricks(event) {
+            event.preventDefault();
+            click++;
+            var start = 15 * click;
+            const url = "{{ path('loadMoreTricks') }}" + start;
+
+            axios.get(url).then(function(response) {
+                console.log(response);
+                $("#trickList").append(response.data);
+                $("#arrow-up").show();
+            }).catch(function (error) {
+                if (response.status === 403) {
+                    window.alert("Vous n'êtes pas autorisé à effectuer cette action !");
+                }
+                else if (response.status === 404) {
+                    window.alert("La page appelé n'existe pas");
+                }
+                else {
+                    window.alert("Une erreur est survenue !");
+                }
+            });
+        }
+
+        document.getElementById("loadMoreTricks").addEventListener("click", loadMoreTricks);
+    </script>
 {% endblock %}

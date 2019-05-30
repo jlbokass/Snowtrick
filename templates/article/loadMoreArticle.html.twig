@@ -1,0 +1,61 @@
+
+{% for article in articles %}
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+            {% if form.image.vars.value.id is defined %}
+                <img class="card-img-top" src="{{ asset('uploads/article_image/')~form.image.value.ImageFilename }}" alt="test">
+            {% else %}
+                <img class="card-img-top" src="{{ asset('uploads/article_image/')~'snow11.jpg' }}" alt="test">
+            {% endif %}
+            <div class="card-footer d-flex align-items-baseline">
+                <div>
+                    <h5 class="card-title"><a href="{{ path('article_show', {id: article.id}) }}">{{ article.title }}</a></h5>
+                </div>
+                {% if is_granted('ROLE_USER') %}
+                    <div class="ml-auto d-flex align-items-baseline">
+                        {% if is_granted('EDIT', article) %}
+                            <div class="mr-2">
+                                <button type="submit" class="btn btn-sm btn-outline-warning" onclick="javascritp:location.href='{{ path('edit_article', {id: article.id}) }}'">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('DELETE', article) %}
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+
+                                <!-- The Modal -->
+                                <div class="modal fade" id="myModal">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Modal Heading</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                Delete article <strong>{{ article.title }}</strong> ?
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-danger" onclick="javascritp:location.href='{{ path('delete_article', {id : article.id}) }}'" data-dismiss="modal">Delete</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}

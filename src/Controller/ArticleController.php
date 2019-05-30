@@ -67,4 +67,19 @@ class ArticleController extends AbstractController
             'formComment' => $form->createView(),
         ]);
     }
+
+    /**
+     * Get the 15 next tricks in the database and create a Twig file with them that will be displayed via Javascript
+     *
+     * @Route("/{start}", name="loadMoreTricks", requirements={"start": "\d+"})
+     */
+    public function loadMoreTricks(ArticleRepository $articleRepository, $start = 4)
+    {
+        // Get 15 tricks from the start position
+        $article = $articleRepository->findBy([], ['createdAt' => 'DESC'], 12, $start);
+
+        return $this->render('article/loadMoreArticle.html.twig', [
+            'articles' => $article
+        ]);
+    }
 }

@@ -1,19 +1,20 @@
-{% extends 'content_base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block manager_name %}
+{% block title %}
     Edit an article
 {% endblock %}
 
-{% block content_body %}
-    <h1>Edit an article</h1>
-
-    <div class="row">
-        <div class="col-sm-12">
-            {% include 'article_admin/articleForm.html.twig' %}
-            <button type="submit" class="btn btn-info addImage">Add an image</button>
-            <button type="submit" class="btn btn-danger">Edit</button>
-            <button type="reset" class="btn btn-info" onclick="javascritp:location.href='{{ path('admin_article_index') }}'">Cancel</button>
-            {{ form_end(articleForm) }}
+{% block body %}
+    <div class="container" style="margin-top: 100px; margin-bottom: 100px">
+        <h1>Edit an article</h1>
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'article_admin/articleForm.html.twig' %}
+                <button type="submit" class="btn btn-info addImage">Add an image</button>
+                <button type="submit" class="btn btn-danger">Edit</button>
+                <button type="reset" class="btn btn-info" onclick="javascritp:location.href='{{ path('admin_article_index') }}'">Cancel</button>
+                {{ form_end(articleForm) }}
+            </div>
         </div>
     </div>
 {% endblock %}

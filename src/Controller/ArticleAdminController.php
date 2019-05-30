@@ -53,14 +53,14 @@ class ArticleAdminController extends AbstractController
      */
     public function new(EntityManagerInterface $manager, Request $request, UploaderHelper $uploaderHelper): Response
     {
-        $articleForm = $this->createForm(ArticleType::class);
+        $articleForm = $this->createForm(ArticleType::class, null);
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
             $article = $articleForm->getData();
 
-            $attachments = $article->getImages();
+            $attachments = $articleForm['images']->getData();
 
             if ($attachments) {
 
@@ -146,6 +146,7 @@ class ArticleAdminController extends AbstractController
 
     /**
      * @Route("/admin/article/delete/image/{id}",
+     *     requirements={"id"="\d+"},
      *     name="delete_image",
      *     methods={"POST"},
      *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")

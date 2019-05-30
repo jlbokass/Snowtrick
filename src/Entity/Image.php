@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+ *
+ * @ORM\HasLifecycleCallbacks()
  */
 class Image
 {
@@ -71,5 +73,21 @@ class Image
     public function setFile(UploadedFile $file): void
     {
         $this->file = $file;
+    }
+
+    public function getImagePath()
+    {
+        return 'uploads/article_image/'.$this->getImageFilename();
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function handle()
+    {
+        if ($this->file === null) {
+            return;
+        }
+
     }
 }

@@ -6,10 +6,17 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     errorPath="title",
+ *     message="This title already exist"
+ * )
  */
 class Article
 {
@@ -27,8 +34,8 @@ class Article
      * @Assert\Length(
      *     min = 3,
      *     max = 30,
-     *     minMessage="test",
-     *     maxMessage="test"
+     *     minMessage="The title must be at least {{ limit }} characters long",
+     *     maxMessage="The title cannot be longer than {{ limit }} characters"
      * )
      */
     private $title;
@@ -38,8 +45,8 @@ class Article
      * @Assert\Length(
      *     min = 10,
      *     max = 400,
-     *     minMessage="test",
-     *     maxMessage="test"
+     *     minMessage="The content must be at least {{ limit }} characters long",
+     *     maxMessage="The content cannot be longer than {{ limit }} characters"
      * )
      */
     private $content;

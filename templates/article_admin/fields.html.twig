@@ -3,9 +3,9 @@
         <div class="imageArea">
             {{ block('collection_widget') }}
 
-            {% if form.vars.value.id is defined %}
-                <a data-image-id="{{ form.vars.value.id }}"
-                   data-delete-path="{{ path('delete_image', {id : form.vars.value.id}) }}"
+            {% if form.image.vars.value.id is defined %}
+                <a data-image-id="{{ form.image.vars.value.id }}"
+                   data-delete-path="{{ path('delete_image', {id : form.image.vars.value.id}) }}"
                    href="#" class="delete-image btn btn-warning">delete</a>
             {% endif %}
         </div>
@@ -14,3 +14,7 @@
 {% endblock %}
 
 
+<div class="btn">
+    <span>{{ (form.image.vars.value.name is defined) ? "Modifier l'" : "Ajouter une "}} image</span>
+    {{ form_row(form.image) }}
+</div>

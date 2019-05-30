@@ -18,7 +18,7 @@
             <div class="row">
                 {% for image in article.images %}
                     <div class="col-sm-2">
-                        <img src="{{ asset('uploads/article_image/'~image.imageFilename) }}" alt="" width="200px">
+                        <img src="{{ asset('uploads/article_image/'~image.ImagePath) }}" alt="" width="200px">
                     </div>
                 {% endfor %}
             </div>
