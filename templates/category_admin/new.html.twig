@@ -8,10 +8,10 @@
     <h1>Add a category</h1>
     <div class="row">
         <div class="col-sm-6">
-            {% include 'category_admin/form.html.twig' %}
+            {% include 'category_admin/categoryForm.html.twig' %}
             <button type="submit" class="btn btn-success">Add</button>
             <button type="reset" class="btn btn-info" onclick="javascritp:location.href='{{ path('admin_article_index') }}'">Cancel</button>
-            {{ form_end(form) }}
+            {{ form_end(categoryForm) }}
         </div>
     </div>
 {% endblock %}

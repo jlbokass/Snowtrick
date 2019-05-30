@@ -47,12 +47,12 @@ class CategoryAdminController extends AbstractController
      */
     public function new(EntityManagerInterface $manager, Request $request): Response
     {
-        $form = $this->createForm(CategoryType::class);
-        $form->handleRequest($request);
+        $categoryForm = $this->createForm(CategoryType::class);
+        $categoryForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
 
-            $category = $form->getData();
+            $category = $categoryForm->getData();
             $manager->persist($category);
             $manager->flush();
 
@@ -60,7 +60,7 @@ class CategoryAdminController extends AbstractController
         }
 
         return $this->render('category_admin/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $categoryForm->createView(),
         ]);
     }
 
@@ -76,10 +76,10 @@ class CategoryAdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('EDIT', $category);
 
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->handleRequest($request);
+        $categoryForm = $this->createForm(CategoryType::class, $category);
+        $categoryForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
 
             $manager->flush();
 
@@ -93,7 +93,7 @@ class CategoryAdminController extends AbstractController
 
         return $this->render('category_admin/edit.html.twig', [
             'category' => $category,
-            'form' => $form->createView(),
+            'form' => $categoryForm->createView(),
         ]);
     }
 

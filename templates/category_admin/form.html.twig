@@ -1,12 +1,8 @@
-{{ form_start(form) }}
+{{ form_start(categoryForm) }}
 
 <div class="form-group">
-    {{ form_label(form.title) }}
-    {{ form_widget(form.title) }}
-    {{ form_errors(form.title) }}
+    {{ form_row(form.title) }}
 </div>
 <div class="form-group">
-    {{ form_label(form.content) }}
-    {{ form_widget(form.content) }}
-    {{ form_errors(form.content) }}
+    {{ form_row(categoryForm.content) }}
 </div>

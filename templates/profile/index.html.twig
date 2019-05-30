@@ -15,10 +15,11 @@
                         <ul>
                             <li><p><strong>Username: </strong>{{ app.user.username }}</p></li>
                             <li><p><strong>Email: </strong>{{ app.user.email }}</p></li>
+                            <li class="mt-5 mb-1"><a href="{{ path('profile_edit') }}" class="btn btn-warning">Edit your profile</a></li>
+                            <li><a href="" class="btn btn-danger">delete your profile</a></li>
                         </ul>
-                        <button class="btn btn-warning">Edit</button>
-                        <button class="btn btn-info">Password</button>
-                        <button type="reset" class="btn btn-danger" onclick="javascritp:location.href='{{ path('profile_show') }}'">Delete</button>
+
+
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12" style="margin: 0; padding: 0; height: 30%">
-                    <img src="{{ asset(article.imagePath) }}" alt="" class="w-100 img-responsive" style="margin: 0; padding: 0; height: 30%">
+                    <img src="{{ asset('uploads/article_image/'~'snow4.jpg') }}" alt="" height="450" class="w-100 img-responsive">
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
             <div class="row">
                 {% for image in article.images %}
                     <div class="col-sm-2">
-                        <img src="{{ asset(article.imagePath) }}" alt="" width="200px">
+                        <img src="{{ asset('uploads/article_image/'~image.imageFilename) }}" alt="" width="200px">
                     </div>
                 {% endfor %}
             </div>
@@ -28,14 +28,7 @@
             <div class="row">
                 <div class="col-sm-12 p-3">
                     <h3>{{ article.title }} <small class="text-info"> by {{ article.user.username }}</small></h3>
-
                     <p>{{ article.content }}</p>
-                    <p class="mb-3">
-                        <span class="pr-1">Share:</span>
-                        <i class="pr-1 fab fa-facebook-square"></i>
-                        <i class="pr-1 fab fa-twitter-square"></i>
-                        <i class="fab fa-instagram"></i>
-                    </p>
                 </div>
             </div>
         </div>
@@ -53,7 +46,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h4><i class="pr-3 fa fa-comment"></i>{{ article.nonDeletedComments|length }} Comments</h4>
+                <h4><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} Comments</h4>
                 <hr>
                 <div class="row mb-5">
                     {% if app.user %}
@@ -61,11 +54,7 @@
                         <img class="comment-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
                         <div class="comment-container d-inline-block pl-3 align-top">
                             <span class="commenter-name">{{ app.user.username }}</span>
-                            {{ form_start(formComment) }}
-                            <div class="form-group">
-                                {{ form_widget(formComment.content) }}
-                                {{ form_errors(formComment.content) }}
-                            </div>
+                            {% include 'article/formComment.html.twig' %}
                             <button type="submit" class="btn btn-info">Comment</button>
                             {{ form_end(formComment) }}
                         </div>
@@ -74,15 +63,12 @@
                 </div>
 
                 <div class="row">
-                    {% for comment in article.nonDeletedComments %}
+                    {% for comment in article.comments %}
                         <div class="col-sm-12">
                             <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
                             <div class="comment-container d-inline-block pl-3 align-top">
                                 <span class="commenter-name">{{ comment.user.username }}</span>
                                 <small>{{ comment.createdAt|time_diff }}</small>
-                                {% if comment.isDeleted %}
-                                    <i class="fas fa-times"></i> deleted
-                                {% endif %}
                                 <br>
                                 <span class="comment"> {{ comment.content }}</span>
                                 <p><a href="#">Reply</a></p>

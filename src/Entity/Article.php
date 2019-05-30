@@ -23,11 +23,24 @@ class Article
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message= " The title cannot be null ")
+     *
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 30,
+     *     minMessage="test",
+     *     maxMessage="test"
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(
+     *     min = 10,
+     *     max = 400,
+     *     minMessage="test",
+     *     maxMessage="test"
+     * )
      */
     private $content;
 
@@ -151,7 +164,7 @@ class Article
 
     public function getImagePath()
     {
-        return 'uploads/article_image/'.$this->getImages()->first()->getImageFilename();
+        return 'uploads/article_image/'.$this->getImages();
     }
 
     /**

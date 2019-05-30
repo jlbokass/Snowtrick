@@ -9,7 +9,7 @@
     <div class="image-fullscreen mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-sm-6">
                     <h1 class="mt-5">Share your Passion!</h1>
                     <p>Sport will seek fear to dominate it<br>fatigue to triumph over it<br>difficulty in overcoming it</p>
                 </div>
@@ -27,9 +27,7 @@
             {% for article in articles %}
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
-                        {% for image in article.images.first %}
-                        <img class="card-img-top" src="{{ asset(image.filename) }}" alt="test">
-                        {% endfor %}
+                        <img class="card-img-top" src="{{ asset('uploads/article_image/')~'snow11.jpg' }}" alt="test">
                         <div class="card-footer d-flex align-items-baseline">
                             <div>
                                 <h5 class="card-title"><a href="{{ path('article_show', {id: article.id}) }}">{{ article.title }}</a></h5>

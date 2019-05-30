@@ -10,7 +10,7 @@ body {
 }
 
 .form-signin h1 {
-    margin-top: 70px;
+    /*margin-top: 70px;*/
 }
 
 .form-signin .checkbox {
@@ -39,4 +39,12 @@ body {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+.form-signin ul {
+    list-style: none;
+}
+
+.form-signin .card {
+    margin-top: 2rem;
 }
