@@ -25,6 +25,10 @@ class CommentVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
+
+        if ($user->isAdmin()) {
+            return true;
+        }
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'EDIT':

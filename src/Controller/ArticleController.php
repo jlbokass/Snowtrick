@@ -23,7 +23,7 @@ class ArticleController extends AbstractController
     public function homepage(ArticleRepository $articleRepository)
     {
         /** @var Article $articles */
-        $articles = $articleRepository->findAll();
+        $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 4, 0);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -76,7 +76,7 @@ class ArticleController extends AbstractController
     public function loadMoreTricks(ArticleRepository $articleRepository, $start = 4)
     {
         // Get 15 tricks from the start position
-        $article = $articleRepository->findBy([], ['createdAt' => 'DESC'], 12, $start);
+        $article = $articleRepository->findBy([], ['createdAt' => 'DESC'], 4, $start);
 
         return $this->render('article/loadMoreArticle.html.twig', [
             'articles' => $article

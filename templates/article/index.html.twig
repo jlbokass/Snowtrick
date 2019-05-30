@@ -89,11 +89,12 @@
 
         <div class="row">
             <div class="col-12 text-center">
-                <button id="loadMoreTricks" class="btn btn-primary">Voir plus de tricks</button>
+                <button id="loadMoreTricks" class="btn btn-primary">Load more</button>
             </div>
         </div>
-        <a href="#tricks"><i id="arrow-up" class="fas fa-arrow-up fa-2x float-right"></i></a>
-
+        <div class="container mb-5">
+            <a href="#section1"> <i id="arrow-up" class="fas fa-arrow-circle-up fa-2x float-right"></i></a>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -107,7 +108,7 @@
         function loadMoreTricks(event) {
             event.preventDefault();
             click++;
-            var start = 15 * click;
+            var start = 4 * click;
             const url = "{{ path('loadMoreTricks') }}" + start;
 
             axios.get(url).then(function(response) {
