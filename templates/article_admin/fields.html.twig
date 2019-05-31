@@ -2,7 +2,6 @@
     {% spaceless %}
         <div class="imageArea">
             {{ block('collection_widget') }}
-
             {% if form.image.vars.value.id is defined %}
                 <a data-image-id="{{ form.image.vars.value.id }}"
                    data-delete-path="{{ path('delete_image', {id : form.image.vars.value.id}) }}"
@@ -12,9 +11,3 @@
     {% endspaceless %}
 
 {% endblock %}
-
-
-<div class="btn">
-    <span>{{ (form.image.vars.value.name is defined) ? "Modifier l'" : "Ajouter une "}} image</span>
-    {{ form_row(form.image) }}
-</div>

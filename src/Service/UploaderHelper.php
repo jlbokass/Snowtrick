@@ -25,7 +25,7 @@ class UploaderHelper
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $file->getFile();
 
-        $destination = $this->uploadsPath.'/article_image';
+        $destination = $this->uploadsPath;
 
         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(),PATHINFO_FILENAME);
 

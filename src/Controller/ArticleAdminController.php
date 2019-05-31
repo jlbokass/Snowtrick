@@ -53,27 +53,14 @@ class ArticleAdminController extends AbstractController
      *
      * @return Response
      */
-    public function new(EntityManagerInterface $manager, Request $request, UploaderHelper $uploaderHelper): Response
+    public function new(EntityManagerInterface $manager, Request $request): Response
     {
-        $articleForm = $this->createForm(ArticleType::class, null);
+        $articleForm = $this->createForm(ArticleType::class);
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
             $article = $articleForm->getData();
-
-            /** @var Image $images */
-            $images = $article->getImages();
-
-            if ($images) {
-
-                foreach ($images as $image) {
-
-                    $newFilename = $uploaderHelper->uploadArticleImage($image);
-
-                    $image->setImageFilename($newFilename);
-                }
-            }
 
             $user = $this->getUser();
             $article->setUser($user);

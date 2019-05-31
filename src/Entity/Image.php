@@ -36,6 +36,13 @@ class Image
      */
     private $article;
 
+    private $uploadsPath;
+
+    public function __construct(string $uploadsPath)
+    {
+        $this->uploadsPath = $uploadsPath;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,16 +88,43 @@ class Image
     }
 
     /**
-     * @ORM\PreFlush()
+     * @ORM\PrePersist()
      */
-    public function handle()
+    public function uploadArticleImage(): string
     {
         if ($this->file === null) {
             return;
         }
 
         if ($this->id) {
-            unlink('uploads/article_image/'.$this->imageFilename);
+            unlink($this->uploadsPath);
         }
+
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $this->getFile();
+
+        $destination = $this->uploadsPath;
+
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(),PATHINFO_FILENAME);
+
+        $newFilename = $this->filenameUrlize($originalFilename) .'-'. uniqid().'.'.$uploadedFile->guessExtension();
+
+
+
+        $uploadedFile->move(
+            $destination,
+            $this->setImageFilename($newFilename)
+        );
+
+        return $newFilename;
+    }
+
+    public function filenameUrlize(string $filename): string
+    {
+        $filename = strtolower($filename);
+        $filename = strtr($filename, "àäåâôöîïûüéè", "aaaaooiiuuee");
+        $filename = str_replace(' ', '-', $filename);
+
+        return $filename;
     }
 }
