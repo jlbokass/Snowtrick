@@ -60,15 +60,16 @@ class ArticleAdminController extends AbstractController
 
             $article = $articleForm->getData();
 
-            $attachments = $articleForm['images']->getData();
+            /** @var Image $images */
+            $images = $article->getImages();
 
-            if ($attachments) {
+            if ($images) {
 
-                foreach ($attachments as $attachment) {
+                foreach ($images as $image) {
 
-                    $file = $attachment->getFile();
-                    $newFilename = $uploaderHelper->uploadArticleImage($file);
-                    $attachment->setImageFilename($newFilename);
+                    $newFilename = $uploaderHelper->uploadArticleImage($image);
+
+                    $image->setImageFilename($newFilename);
                 }
             }
 

@@ -8,6 +8,7 @@
 
 namespace App\Service;
 
+use App\Entity\Image;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploaderHelper
@@ -19,8 +20,11 @@ class UploaderHelper
         $this->uploadsPath = $uploadsPath;
     }
 
-    public function uploadArticleImage(UploadedFile $uploadedFile): string
+    public function uploadArticleImage(Image $file): string
     {
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $file->getFile();
+
         $destination = $this->uploadsPath.'/article_image';
 
         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(),PATHINFO_FILENAME);
