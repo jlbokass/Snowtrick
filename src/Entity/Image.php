@@ -89,5 +89,8 @@ class Image
             return;
         }
 
+        if ($this->id) {
+            unlink('uploads/article_image/'.$this->imageFilename);
+        }
     }
 }

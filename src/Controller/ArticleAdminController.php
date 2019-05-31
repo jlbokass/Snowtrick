@@ -49,6 +49,8 @@ class ArticleAdminController extends AbstractController
      *
      * @param EntityManagerInterface $manager
      * @param Request $request
+     * @param UploaderHelper $uploaderHelper
+     *
      * @return Response
      */
     public function new(EntityManagerInterface $manager, Request $request, UploaderHelper $uploaderHelper): Response
@@ -105,21 +107,24 @@ class ArticleAdminController extends AbstractController
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
-        /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $articleForm['imageFile']->getData();
+            $article = $articleForm->getData();
 
-            if ($uploadedFile) {
+            /** @var Image $images */
+            $images = $article->getImages();
 
-                $newFilename = $uploaderHelper->uploadArticleImage($uploadedFile);
+            if ($images) {
 
-                $article->setImageFilename($newFilename);
+                foreach ($images as $image) {
+
+                    $newFilename = $uploaderHelper->uploadArticleImage($image);
+
+                    $image->setImageFilename($newFilename);
+                }
             }
 
             $manager->flush();
 
-            return $this->redirectToRoute('edit_article', [
-                'id' => $article->getId()
-            ]);
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('article_admin/edit.html.twig', [
