@@ -20,13 +20,16 @@ class ArticleController extends AbstractController
     /**
      * @Route("/",name="app_homepage")
      */
-    public function homepage(ArticleRepository $articleRepository)
+    public function homepage(ArticleRepository $articleRepository, ImageRepository $imageRepository)
     {
         /** @var Article $articles */
-        $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 4, 0);
+        $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 8, 0);
+        $image = $imageRepository->findFirstFilename();
+        dd($image);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
+            'image' => $image,
         ]);
     }
 

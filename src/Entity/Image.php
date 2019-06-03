@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  *
- * @ORM\HasLifecycleCallbacks()
  */
 class Image
 {
@@ -25,9 +24,6 @@ class Image
      */
     private $imageFilename;
 
-    /**
-     * @Assert\File(mimeTypes={ "application/pdf" })
-     */
     private $file;
 
     /**
@@ -37,11 +33,6 @@ class Image
     private $article;
 
     private $uploadsPath;
-
-    public function __construct(string $uploadsPath)
-    {
-        $this->uploadsPath = $uploadsPath;
-    }
 
     public function getId(): ?int
     {
@@ -87,44 +78,13 @@ class Image
         return 'uploads/article_image/'.$this->getImageFilename();
     }
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function uploadArticleImage(): string
+    public function getUploadsPath(): string
     {
-        if ($this->file === null) {
-            return;
-        }
-
-        if ($this->id) {
-            unlink($this->uploadsPath);
-        }
-
-        /** @var UploadedFile $uploadedFile */
-        $uploadedFile = $this->getFile();
-
-        $destination = $this->uploadsPath;
-
-        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(),PATHINFO_FILENAME);
-
-        $newFilename = $this->filenameUrlize($originalFilename) .'-'. uniqid().'.'.$uploadedFile->guessExtension();
-
-
-
-        $uploadedFile->move(
-            $destination,
-            $this->setImageFilename($newFilename)
-        );
-
-        return $newFilename;
+        return $this->uploadsPath;
     }
 
-    public function filenameUrlize(string $filename): string
+    public function setUploadsPath(string $uploadsPath): void
     {
-        $filename = strtolower($filename);
-        $filename = strtr($filename, "àäåâôöîïûüéè", "aaaaooiiuuee");
-        $filename = str_replace(' ', '-', $filename);
-
-        return $filename;
+        $this->uploadsPath = $uploadsPath;
     }
 }

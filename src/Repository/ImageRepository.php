@@ -47,4 +47,14 @@ class ImageRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findFirstFilename()
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.article', 'a')
+            ->addSelect('a')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

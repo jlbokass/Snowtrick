@@ -37,6 +37,7 @@ class Article
      *     minMessage="The title must be at least {{ limit }} characters long",
      *     maxMessage="The title cannot be longer than {{ limit }} characters"
      * )
+     * @Assert\Type("string")
      */
     private $title;
 
@@ -48,6 +49,8 @@ class Article
      *     minMessage="The content must be at least {{ limit }} characters long",
      *     maxMessage="The content cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @Assert\Type("string")
      */
     private $content;
 
@@ -86,6 +89,7 @@ class Article
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="article", cascade={"persist", "remove"})
+     *
      */
     private $images;
 

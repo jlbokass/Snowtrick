@@ -18,9 +18,40 @@
         </div>
     </div>
 
+    <!-- Filter -->
+    <div class="container mt-5" id="section1">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Category
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Date
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Newest</a>
+                            <a class="dropdown-item" href="#">Older</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
 <!-- Article -->
-<div class="mt-5" id="section1">
-    <div class="container" >
+<div class="mt-2">
+    <div class="container">
         <!-- Page Features -->
         <div class="row text-center" id="trickList">
 
@@ -28,7 +59,9 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
                             {% if form.image.vars.value.id is defined %}
-                                <img class="card-img-top" src="{{ asset('uploads/article_image/')~form.image.value.ImageFilename }}" alt="test">
+
+{#                                <img class="card-img-top" src="{{ asset('uploads/article_image/')~form.image.value.ImageFilename }}" alt="test">#}
+                                <img class="card-img-top" src="{{ asset('uploads/article_image/')~image.imageFilename }}" alt="test">
                             {% else %}
                                 <img class="card-img-top" src="{{ asset('uploads/article_image/')~'snow11.jpg' }}" alt="test">
                             {% endif %}
@@ -92,9 +125,9 @@
                 <button id="loadMoreTricks" class="btn btn-primary">Load more</button>
             </div>
         </div>
-        <div class="container mb-5">
-            <a href="#section1"> <i id="arrow-up" class="fas fa-arrow-circle-up fa-2x float-right"></i></a>
-        </div>
+    </div>
+    <div class="container-fluid mb-5">
+        <a href="#section1"> <i id="arrow-up" class="fas fa-arrow-circle-up fa-2x float-right"></i></a>
     </div>
 </div>
 {% endblock %}
@@ -127,7 +160,6 @@
                 }
             });
         }
-
         document.getElementById("loadMoreTricks").addEventListener("click", loadMoreTricks);
     </script>
 {% endblock %}

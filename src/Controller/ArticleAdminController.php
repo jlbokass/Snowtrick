@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +54,7 @@ class ArticleAdminController extends AbstractController
      *
      * @return Response
      */
-    public function new(EntityManagerInterface $manager, Request $request): Response
+    public function new(EntityManagerInterface $manager, Request $request, UploaderHelper $uploaderHelper): Response
     {
         $articleForm = $this->createForm(ArticleType::class);
         $articleForm->handleRequest($request);
@@ -61,6 +62,18 @@ class ArticleAdminController extends AbstractController
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
             $article = $articleForm->getData();
+
+            /** @var Image[] $images */
+            $images = $article->getImages();
+
+            if ($images) {
+                foreach ($images as $image) {
+
+                    $filename = $image->getFile();
+                    $newFilename = $uploaderHelper->uploadArticleImage($filename);
+                    $image->setImageFilename($newFilename);
+                }
+            }
 
             $user = $this->getUser();
             $article->setUser($user);
