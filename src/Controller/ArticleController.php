@@ -24,12 +24,11 @@ class ArticleController extends AbstractController
     {
         /** @var Article $articles */
         $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 8, 0);
-        $image = $imageRepository->findFirstFilename();
-        dd($image);
 
+        $images = $imageRepository->findAll();
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
-            'image' => $image,
+            'images' => $images,
         ]);
     }
 

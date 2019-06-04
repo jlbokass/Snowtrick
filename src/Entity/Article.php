@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Article
 {
+    private const DEFAULT_IMG = 'snow13.jpg';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -89,7 +91,6 @@ class Article
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="article", cascade={"persist", "remove"})
-     *
      */
     private $images;
 
@@ -171,11 +172,6 @@ class Article
     public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-    }
-
-    public function getImagePath()
-    {
-        return 'uploads/article_image/'.$this->getImages();
     }
 
     /**
@@ -272,5 +268,10 @@ class Article
         }
 
         return $this;
+    }
+
+    public function getCoverImage()
+    {
+        return self::DEFAULT_IMG;
     }
 }
