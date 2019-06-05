@@ -87,4 +87,6 @@ class Image
     {
         $this->uploadsPath = $uploadsPath;
     }
+
+
 }

@@ -9,6 +9,7 @@ use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,10 +26,8 @@ class ArticleController extends AbstractController
         /** @var Article $articles */
         $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 8, 0);
 
-        $images = $imageRepository->findAll();
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
-            'images' => $images,
         ]);
     }
 

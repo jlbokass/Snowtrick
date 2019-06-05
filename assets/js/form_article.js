@@ -50,7 +50,6 @@ $(document).ready(function(){
 
         $deleteLink.click(function(e) {
             $prototype.remove();
-
             e.preventDefault(); // évite qu'un # apparaisse dans l'URL
             return false;
         });

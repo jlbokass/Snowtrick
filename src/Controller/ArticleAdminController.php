@@ -81,6 +81,11 @@ class ArticleAdminController extends AbstractController
             $manager->persist($article);
             $manager->flush();
 
+            $this->addFlash(
+                'success',
+                'success ah ah'
+            );
+
             return $this->redirectToRoute('app_homepage');
         }
 
