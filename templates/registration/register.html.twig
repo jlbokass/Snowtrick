@@ -15,9 +15,11 @@
                    <div class="col-sm-12">
                        <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
 
-                       {{ form_start(registrationForm) }}
+                       {{ form_start(registrationForm, {'attr': {
+                           'novalidate': 'novalidate'
+                       }}) }}
                        {{ form_row(registrationForm.email) }}
-                       {{ form_row(registrationForm.plainPassword) }}
+                       {{ form_row(registrationForm.password) }}
                        {{ form_row(registrationForm.username) }}
 
                        <button class="btn btn-lg btn-primary">Register</button>

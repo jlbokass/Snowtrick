@@ -3,7 +3,6 @@
 
 namespace App\EventSubscriber;
 
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -18,7 +17,6 @@ class MaintenanceSubscriber implements EventSubscriberInterface
     {
         $this->twig = $twig;
     }
-
 
     public function methodCallOnKernelResponse(FilterResponseEvent $filterResponseEvent)
     {

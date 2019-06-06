@@ -66,6 +66,9 @@ class ArticleAdminController extends AbstractController
             /** @var Image[] $images */
             $images = $article->getImages();
 
+            //** @var UploadedFile $images */
+            //$images[] = $articleForm['images']->getData();
+
             if ($images) {
                 foreach ($images as $image) {
 
@@ -83,7 +86,7 @@ class ArticleAdminController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'success ah ah'
+                'You have had a new article'
             );
 
             return $this->redirectToRoute('app_homepage');
@@ -97,7 +100,6 @@ class ArticleAdminController extends AbstractController
 
     /**
      * @Route("/admin/article/edit/{id}", name="edit_article", requirements={"id"="\d+"})
-     *
      * @param Article $article
      * @param EntityManagerInterface $manager
      * @param Request $request
@@ -111,23 +113,11 @@ class ArticleAdminController extends AbstractController
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
-
-            $article = $articleForm->getData();
-
-            /** @var Image $images */
-            $images = $article->getImages();
-
-            if ($images) {
-
-                foreach ($images as $image) {
-
-                    $newFilename = $uploaderHelper->uploadArticleImage($image);
-
-                    $image->setImageFilename($newFilename);
-                }
-            }
-
             $manager->flush();
+            $this->addFlash(
+                'success',
+                'Edit Ok'
+            );
 
             return $this->redirectToRoute('app_homepage');
         }
@@ -152,7 +142,7 @@ class ArticleAdminController extends AbstractController
         $manager->remove($article);
         $manager->flush();
 
-        return $this->redirectToRoute('app_homepage');
+        return $this->redirectToRoute('admin_article_index');
     }
 
     /**

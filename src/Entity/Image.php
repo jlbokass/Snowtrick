@@ -24,6 +24,13 @@ class Image
      */
     private $imageFilename;
 
+    /**
+     * @Assert\File(
+     *     maxSize="180k",
+     *     mimeTypes={"image/jpeg" , "image/png"},
+     *     mimeTypesMessage="Only jpg, png are available"
+     * )
+     */
     private $file;
 
     /**

@@ -7,7 +7,7 @@ $(document).ready(function(){
     // recuprere le nombre d'input keyword
     var index = $container.find(':input').length;
 
-    $container.find('.col-form-label').remove();
+     $container.find('.col-form-label').remove();
 
     // si 0 input Keyword ajoute 1
     if(index == 0) {
@@ -15,7 +15,7 @@ $(document).ready(function(){
     } else {
         // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
         $container.children('div').each(function () {
-            //  deleteButton($(this));
+              deleteButton($(this));
         });
     }
 

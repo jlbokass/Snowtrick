@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -23,6 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Email cannot be null")
      */
     private $email;
 
@@ -34,6 +36,23 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(
+     *     message="The password cannot be null"
+     * )
+     * @Assert\Length(
+     *     min="6",
+     *     max="12",
+     *     minMessage="The password must be at least {{ limit }} characters long",
+     *     maxMessage="The password cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @Assert\Regex(pattern="*[a-z]+.*",
+     *     match=true,
+     *     message="Password needs at least one letter")
+     *
+     * @Assert\Regex(pattern="*\d+.*",
+     *     match=true,
+     *     message="Password needs at least one number")
      */
     private $password;
 

@@ -32,7 +32,6 @@ class Article
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message= " The title cannot be null ")
-     *
      * @Assert\Length(
      *     min = 3,
      *     max = 30,
@@ -44,14 +43,13 @@ class Article
     private $title;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\Length(
      *     min = 10,
      *     max = 400,
      *     minMessage="The content must be at least {{ limit }} characters long",
      *     maxMessage="The content cannot be longer than {{ limit }} characters"
      * )
-     *
      * @Assert\Type("string")
      */
     private $content;

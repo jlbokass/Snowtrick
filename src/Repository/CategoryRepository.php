@@ -79,7 +79,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function findAllPublishedOrderedByNewest()
     {
         return $this->addIsPublishedQueryBuilder()
-            ->orderBy('c.publishedAt', 'DESC')
+            ->orderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
             ;
@@ -87,8 +87,8 @@ class CategoryRepository extends ServiceEntityRepository
 
     private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
     {
-        return $this->getOrCreateQueryBuider($qb)
-            ->andWhere('c.publishedAt IS NOT NULL');
+        return $this->getOrCreateQueryBuider($qb);
+
     }
 
     private function addIsNotPublishedQueryBuilder(QueryBuilder $qb = null)

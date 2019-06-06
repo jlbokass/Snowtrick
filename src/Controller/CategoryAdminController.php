@@ -22,7 +22,6 @@ class CategoryAdminController extends AbstractController
 {
     /**
      * @Route("/admin/category/index", name="admin_category_index")
-     *
      * @param CategoryRepository $categoryRepository
      * @param Request $request
      * @return Response
@@ -40,7 +39,6 @@ class CategoryAdminController extends AbstractController
 
     /**
      * @Route("admin/category/new", name="add_category")
-     *
      * @param EntityManagerInterface $manager
      * @param Request $request
      * @return Response
@@ -53,14 +51,18 @@ class CategoryAdminController extends AbstractController
         if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
 
             $category = $categoryForm->getData();
+
+            $user = $this->getUser();
+
+            $category->setUser($user);
             $manager->persist($category);
             $manager->flush();
 
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute('admin_category_index');
         }
 
         return $this->render('category_admin/new.html.twig', [
-            'form' => $categoryForm->createView(),
+            'categoryForm' => $categoryForm->createView(),
         ]);
     }
 
@@ -99,7 +101,6 @@ class CategoryAdminController extends AbstractController
 
     /**
      * @Route("/admin/category/delete/{id}", name="delete_category", requirements={"id"="\d+"})
-     *
      * @param Category $category
      * @param EntityManagerInterface $manager
      * @return Response
@@ -111,6 +112,6 @@ class CategoryAdminController extends AbstractController
         $manager->remove($category);
         $manager->flush();
 
-        return $this->redirectToRoute('app_homepage');
+        return $this->redirectToRoute('admin_category_index');
     }
 }

@@ -57,7 +57,7 @@ class SecurityController extends AbstractController
 
             $user->setPassword($passwordEncoder->encodePassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
 
@@ -69,6 +69,11 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->persist($token);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Please check your email'
+            );
 
             return $this->redirectToRoute('app_homepage');
         }
@@ -93,12 +98,8 @@ class SecurityController extends AbstractController
         $user = $token->getUser();
 
         if ($user->getIsEnable()) {
-            $this->addFlash(
-                'notice',
-                'you are register yet'
-            );
 
-            return $this->redirectToRoute('app_login');
+            return $this->render('registration/alreadyRegister.html.twig');
         }
 
         if ($token->getExpiresAt()) {
@@ -109,10 +110,10 @@ class SecurityController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'you registered, please sign in'
+                'you registered, please check your email'
             );
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_homepage');
 
         }
 

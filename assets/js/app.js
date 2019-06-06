@@ -9,6 +9,7 @@
 require('../css/style.css');
 require('../css/login.css');
 require('../js/form_article.js');
+require('../js/fluidMovement.js');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
