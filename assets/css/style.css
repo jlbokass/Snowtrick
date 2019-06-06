@@ -45,7 +45,7 @@ body, html {
     min-width: 260px;
   }
   .comment-container {
-    max-width: 280px;
+    max-width: 600px;
   }
 }
 

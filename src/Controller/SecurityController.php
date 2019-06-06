@@ -6,6 +6,7 @@ use App\Entity\ApiToken;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\ApiTokenRepository;
+use App\Repository\UserRepository;
 use App\Service\TokenSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,11 +54,14 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+
 
             $user->setPassword($passwordEncoder->encodePassword(
                     $user,
-                    $form->get('password')->getData()
+                    //$form->get('password')->getData()
+                    $user->getPassword()
                 )
             );
 
@@ -108,12 +112,8 @@ class SecurityController extends AbstractController
 
             $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'you registered, please check your email'
-            );
 
-            return $this->redirectToRoute('app_homepage');
+            return $this->render('/registration/activated.html.twig');
 
         }
 
@@ -134,5 +134,55 @@ class SecurityController extends AbstractController
     public function logout()
     {
 
+    }
+
+    /**
+     * @Route("/admin/delete/user", name="delete_user")
+     * @return Response
+     */
+    public function deleteUser()
+    {
+        return $this->render('profile/deleteProfile.html.twig');
+    }
+
+    /**
+     * @Route("/admin/confirm/delete/user/{id}",name="confirm_delete_user", requirements={"id"="\d+"})
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function confirmDdeleteUser(EntityManagerInterface $entityManager): Response
+    {
+        $this->logout();
+        $user = $this->getUser();
+        $entityManager->remove($user);
+
+        return $this->redirectToRoute('app_homepage');
+    }
+
+    /**
+     * @Route("/admin/bann/user/{id}", name="banne_user", requirements={"id"="\d+"})
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function banneUser(User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user->setIsEnable(false);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_article_index');
+    }
+
+    /**
+     * @Route("/admin/user/index", name="admin_user_index")
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function allUser(UserRepository $userRepository): Response
+    {
+        return $this->render('user_admin/index.html.twig', [
+            'users' => $userRepository->findBy([], ['id' => 'DESC'])
+        ]);
     }
 }

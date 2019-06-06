@@ -44,6 +44,7 @@ class Article
 
     /**
      * @ORM\Column(type="text", nullable=false)
+     *  @Assert\NotBlank(message= " The content cannot be null ")
      * @Assert\Length(
      *     min = 10,
      *     max = 400,

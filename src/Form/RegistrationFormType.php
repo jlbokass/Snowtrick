@@ -19,14 +19,16 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Email:',
-                'required' => true,
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Password: ',
+                'help' => '1 letter, 1 number, minimum 6, maximum 12',
                 'required' => true,
             ])
             ->add('username', TextType::class, [
-                'label' => 'Username: '
+                'label' => 'Username: ',
+                'required' => true,
+                'help' => 'a uniq identifier is required'
             ])
         ;
     }

@@ -9,12 +9,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h1 class="h3 mb-3 font-weight-normal">Your profile</h1>
+                        <h1 class="h3 mb-3 font-weight-normal">Delete your profile</h1>
                         <ul>
                             <li><p><strong>Username: </strong>{{ app.user.username }}</p></li>
                             <li><p><strong>Email: </strong>{{ app.user.email }}</p></li>
-                            <li class="mt-5 mb-1"><a href="{{ path('profile_edit') }}" class="btn btn-warning">Edit your profile</a></li>
-                            <li><a href="{{ path('delete_user') }}" class="btn btn-danger">delete your profile</a></li>
+                            <li class="mt-5 mb-1"><a href="{{ path('confirm_delete_user', {'id' : app.user.id}) }}" class="btn btn-danger">Confirm delete</a></li>
+                            <li><a href="{{ path('profile_show') }}" class="btn btn-info">cancel</a></li>
                         </ul>
                     </div>
                 </div>

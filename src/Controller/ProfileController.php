@@ -94,9 +94,4 @@ class ProfileController extends AbstractController
             'emailToResetForm' => $emailToResetForm->createView()
         ]);
     }
-
-    public function delete()
-    {
-
-    }
 }

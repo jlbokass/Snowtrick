@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ImageType extends AbstractType
 {
@@ -16,6 +17,14 @@ class ImageType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => false,
                 'required' => false,
+                'attr' => ['placeholder' => 'Select a file'],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '200k',
+                        'mimeTypes' => ['image/jpeg' , 'image/png'],
+                        'mimeTypesMessage' => ' only jpg or png'
+                    ])
+                ]
             ])
         ;
     }

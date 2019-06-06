@@ -15,6 +15,7 @@ class ProfileType extends AbstractType
         $builder
             ->add('email')
             ->add('username')
+            ->add('password')
         ;
     }
 
