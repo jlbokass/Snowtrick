@@ -9,6 +9,7 @@ use App\Repository\ApiTokenRepository;
 use App\Repository\UserRepository;
 use App\Service\TokenSender;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,6 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
-     *
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -37,7 +37,6 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/registration", name="app_register")
-     *
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param EntityManagerInterface $manager
@@ -89,11 +88,10 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/confirmation/{token}", name="token_validation")
-     *
      * @param $token
      * @param ApiTokenRepository $repository
      * @param EntityManagerInterface $manager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
     public function validateToken($token,ApiTokenRepository $repository, EntityManagerInterface $manager): Response
     {
@@ -137,15 +135,17 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/admin/delete/user", name="delete_user")
      * @return Response
      */
-    public function deleteUser()
+    public function deleteUser(): Response
     {
         return $this->render('profile/deleteProfile.html.twig');
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/admin/confirm/delete/user/{id}",name="confirm_delete_user", requirements={"id"="\d+"})
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -155,11 +155,12 @@ class SecurityController extends AbstractController
         $this->logout();
         $user = $this->getUser();
         $entityManager->remove($user);
-
+        $entityManager->flush();
         return $this->redirectToRoute('app_homepage');
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/bann/user/{id}", name="banne_user", requirements={"id"="\d+"})
      * @param User $user
      * @param EntityManagerInterface $entityManager
@@ -175,6 +176,7 @@ class SecurityController extends AbstractController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN")
      * @Route("/admin/user/index", name="admin_user_index")
      * @param UserRepository $userRepository
      * @return Response

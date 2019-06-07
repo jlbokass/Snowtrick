@@ -11,15 +11,21 @@ use App\Repository\ApiTokenRepository;
 use App\Repository\UserRepository;
 use App\Service\TokenSender;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class ProfileController
+ * @package App\Controller
+ */
 class ProfileController extends AbstractController
 {
     /**
+     *  @IsGranted("ROLE_USER")
      * @Route("/profile/show", name="profile_show")
      */
     public function index()
@@ -55,12 +61,10 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/forgot/password", name="forgot_password")
-     *
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $manager
      * @param Request $request
      * @param TokenSender $sender
-     *
      * @return Response
      */
     public function resetPassword(
@@ -80,6 +84,11 @@ class ProfileController extends AbstractController
 
             if (!$user) {
 
+                $this->addFlash(
+                    'info',
+                    'This email do not exists'
+                );
+
                 return $this->redirectToRoute('app_homepage');
             }
 
@@ -87,7 +96,12 @@ class ProfileController extends AbstractController
             $sender->sendToken($user, $token);
             $manager->flush();
 
-            return $this->redirectToRoute('app_login');
+            $this->addFlash(
+                'info',
+                'Pleas check your email'
+            );
+
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('profile/forgotPassword.html.twig', [

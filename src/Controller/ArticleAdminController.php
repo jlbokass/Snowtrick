@@ -28,10 +28,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleAdminController extends AbstractController
 {
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/article/index", name="admin_article_index")
-     *
      * @param ArticleRepository $articleRepository
-     *
      * @return Response
      */
     public function index(ArticleRepository $articleRepository, Request $request)
@@ -46,8 +45,8 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
+     *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/new", name="add_article")
-     *
      * @param EntityManagerInterface $manager
      * @param Request $request
      * @param UploaderHelper $uploaderHelper
@@ -65,7 +64,6 @@ class ArticleAdminController extends AbstractController
 
             /** @var Image[] $images */
             $images = $article->getImages();
-
             //** @var UploadedFile $images */
             //$images[] = $articleForm['images']->getData();
 
@@ -99,6 +97,7 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
+     *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/edit/{id}", name="edit_article", requirements={"id"="\d+"})
      * @param Article $article
      * @param EntityManagerInterface $manager
@@ -129,8 +128,8 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
+     *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/delete/{id}", name="delete_article", requirements={"id"="\d+"})
-     *
      * @param Article $article
      * @param EntityManagerInterface $manager
      * @return Response
@@ -146,12 +145,12 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
+     *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/delete/image/{id}",
      *     requirements={"id"="\d+"},
      *     name="delete_image",
      *     methods={"POST"},
      *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
-     *
      * @param Image $image
      * @param EntityManagerInterface $manager
      * @return JsonResponse
