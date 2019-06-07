@@ -19,11 +19,11 @@ class ArticleType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'required' => true,
-                'label' => 'Title: '
+                'label' => 'Title: ',
             ])
             ->add('content', TextareaType::class, [
                 'required' => true,
-                'label' => 'Content: '
+                'label' => 'Content: ',
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
@@ -32,7 +32,7 @@ class ArticleType extends AbstractType
                 'required' => true,
             ])
             ->add('images', CollectionType::class, [
-                'entry_type' =>ImageType::class,
+                'entry_type' => ImageType::class,
                 'allow_add' => true,
                 'by_reference' => false,
                 'label' => false,

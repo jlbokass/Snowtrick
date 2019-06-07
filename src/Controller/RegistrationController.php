@@ -11,8 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * Class RegistrationController
- * @package App\Controller
+ * Class RegistrationController.
  */
 class RegistrationController extends AbstractController
 {

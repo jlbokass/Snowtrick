@@ -21,10 +21,10 @@ class ImageType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '200k',
-                        'mimeTypes' => ['image/jpeg' , 'image/png'],
-                        'mimeTypesMessage' => ' only jpg or png'
-                    ])
-                ]
+                        'mimeTypes' => ['image/jpeg', 'image/png'],
+                        'mimeTypesMessage' => ' only jpg or png',
+                    ]),
+                ],
             ])
         ;
     }

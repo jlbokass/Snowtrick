@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: jean-le-grandbokassa
  * Date: 13/05/2019
- * Time: 22:03
+ * Time: 22:03.
  */
 
 namespace App\Service;
-
 
 use App\Entity\ApiToken;
 use App\Entity\User;
@@ -21,7 +20,6 @@ class TokenSender
 
     public function __construct(\Swift_Mailer $mailer, Twig $twig)
     {
-
         $this->mailer = $mailer;
         $this->twig = $twig;
     }
@@ -34,7 +32,7 @@ class TokenSender
             ->setBody(
                 $this->twig->render(
                     'registration/activation.html.twig', [
-                        'token' => $token->getToken()
+                        'token' => $token->getToken(),
                     ]
                 ),
                 'text/html'
@@ -42,7 +40,7 @@ class TokenSender
             ->addPart(
                 $this->twig->render(
                     'registration/activation.txt.twig', [
-                        'token' => $token->getToken()
+                        'token' => $token->getToken(),
                     ]
                 ),
                 'text/plain'

@@ -9,10 +9,8 @@ use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ArticleAdminController
- * @package App\Controller
+ * Class ArticleAdminController.
  *
  * @IsGranted("ROLE_USER")
  */
@@ -30,7 +27,9 @@ class ArticleAdminController extends AbstractController
     /**
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/article/index", name="admin_article_index")
+     *
      * @param ArticleRepository $articleRepository
+     *
      * @return Response
      */
     public function index(ArticleRepository $articleRepository, Request $request)
@@ -47,9 +46,10 @@ class ArticleAdminController extends AbstractController
     /**
      *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/new", name="add_article")
+     *
      * @param EntityManagerInterface $manager
-     * @param Request $request
-     * @param UploaderHelper $uploaderHelper
+     * @param Request                $request
+     * @param UploaderHelper         $uploaderHelper
      *
      * @return Response
      */
@@ -59,7 +59,6 @@ class ArticleAdminController extends AbstractController
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
-
             $article = $articleForm->getData();
 
             /** @var Image[] $images */
@@ -69,7 +68,6 @@ class ArticleAdminController extends AbstractController
 
             if ($images) {
                 foreach ($images as $image) {
-
                     $filename = $image->getFile();
                     $newFilename = $uploaderHelper->uploadArticleImage($filename);
                     $image->setImageFilename($newFilename);
@@ -93,15 +91,16 @@ class ArticleAdminController extends AbstractController
         return $this->render('article_admin/new.html.twig', [
             'articleForm' => $articleForm->createView(),
         ]);
-
     }
 
     /**
      *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/edit/{id}", name="edit_article", requirements={"id"="\d+"})
-     * @param Article $article
+     *
+     * @param Article                $article
      * @param EntityManagerInterface $manager
-     * @param Request $request
+     * @param Request                $request
+     *
      * @return Response
      */
     public function edit(Article $article, EntityManagerInterface $manager, Request $request, UploaderHelper $uploaderHelper): Response
@@ -123,15 +122,17 @@ class ArticleAdminController extends AbstractController
 
         return $this->render('article_admin/edit.html.twig', [
             'article' => $article,
-            'articleForm' => $articleForm->createView()
+            'articleForm' => $articleForm->createView(),
         ]);
     }
 
     /**
      *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/delete/{id}", name="delete_article", requirements={"id"="\d+"})
-     * @param Article $article
+     *
+     * @param Article                $article
      * @param EntityManagerInterface $manager
+     *
      * @return Response
      */
     public function delete(Article $article, EntityManagerInterface $manager): Response
@@ -151,8 +152,10 @@ class ArticleAdminController extends AbstractController
      *     name="delete_image",
      *     methods={"POST"},
      *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
-     * @param Image $image
+     *
+     * @param Image                  $image
      * @param EntityManagerInterface $manager
+     *
      * @return JsonResponse
      */
     public function deleteImage(Image $image, EntityManagerInterface $manager)

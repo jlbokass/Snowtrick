@@ -21,7 +21,6 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Category::class,6, function (Category $category) {
-
             $category->setTitle($this->faker->unique()->randomElement(self::$categoryTitle));
             $category->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
 
@@ -29,7 +28,6 @@ class CategoryFixtures extends BaseFixture implements  DependentFixtureInterface
             $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,2));
 
             foreach ($user as $user) {
-
                 $category->setUser($user);
             }
         });

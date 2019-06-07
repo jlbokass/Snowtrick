@@ -4,12 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
-use App\Entity\Image;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
-use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,9 +31,10 @@ class ArticleController extends AbstractController
     /**
      * @Route("/article/show/{id}", name="article_show")
      *
-     * @param Article $article
-     * @param Request $request
+     * @param Article                $article
+     * @param Request                $request
      * @param EntityManagerInterface $manager
+     *
      * @return Response
      */
     public function show(
@@ -49,7 +47,6 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var Comment $comment */
             $comment = $form->getData();
             $comment->setArticle($article);
@@ -59,7 +56,7 @@ class ArticleController extends AbstractController
             $manager->flush();
 
             return $this->redirectToRoute('article_show', [
-                'id' => $article->getId()
+                'id' => $article->getId(),
             ]);
         }
 
@@ -70,7 +67,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * Get the 15 next tricks in the database and create a Twig file with them that will be displayed via Javascript
+     * Get the 15 next tricks in the database and create a Twig file with them that will be displayed via Javascript.
      *
      * @Route("/{start}", name="loadMoreTricks", requirements={"start": "\d+"})
      */
@@ -80,7 +77,7 @@ class ArticleController extends AbstractController
         $article = $articleRepository->findBy([], ['createdAt' => 'DESC'], 4, $start);
 
         return $this->render('article/loadMoreArticle.html.twig', [
-            'articles' => $article
+            'articles' => $article,
         ]);
     }
 }

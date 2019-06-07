@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class CommentAdminController
- * @package App\Controller
+ * Class CommentAdminController.
  *
  * @IsGranted("ROLE_USER")
  */

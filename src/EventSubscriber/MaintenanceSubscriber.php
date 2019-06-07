@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,16 +24,17 @@ class MaintenanceSubscriber implements EventSubscriberInterface
         if ($maintenance) {
             $content = $this->twig->render('maintenance/maintenance.html.twig');
             $response = new Response($content);
+
             return $filterResponseEvent->setResponse($response);
         }
+
         return $filterResponseEvent->getResponse()->getContent();
     }
 
     public static function getSubscribedEvents()
     {
         return [
-          KernelEvents::RESPONSE => 'methodCallOnKernelResponse'
+          KernelEvents::RESPONSE => 'methodCallOnKernelResponse',
         ];
     }
-
 }

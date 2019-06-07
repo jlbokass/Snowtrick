@@ -26,7 +26,7 @@ class ArticleRepository extends ServiceEntityRepository
     //  */
 
     /**
-     * @param null|string $term
+     * @param string|null $term
      *
      * @return Article[]
      */
@@ -105,7 +105,6 @@ class ArticleRepository extends ServiceEntityRepository
 
     private function getOrCreateQueryBuider(QueryBuilder $qb = null)
     {
-        return $qb ? : $this->createQueryBuilder('a');
+        return $qb ?: $this->createQueryBuilder('a');
     }
-
 }

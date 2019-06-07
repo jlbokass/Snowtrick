@@ -13,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -22,7 +21,9 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     *
      * @param AuthenticationUtils $authenticationUtils
+     *
      * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -37,10 +38,12 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/registration", name="app_register")
-     * @param Request $request
+     *
+     * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param EntityManagerInterface $manager
-     * @param TokenSender $sender
+     * @param EntityManagerInterface       $manager
+     * @param TokenSender                  $sender
+     *
      * @return Response
      */
     public function registration(
@@ -53,10 +56,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $user->setPassword($passwordEncoder->encodePassword(
                     $user,
                     //$form->get('password')->getData()
@@ -82,15 +82,17 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView()
+            'registrationForm' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/confirmation/{token}", name="token_validation")
+     *
      * @param $token
-     * @param ApiTokenRepository $repository
+     * @param ApiTokenRepository     $repository
      * @param EntityManagerInterface $manager
+     *
      * @return Response
      */
     public function validateToken($token,ApiTokenRepository $repository, EntityManagerInterface $manager): Response
@@ -100,19 +102,15 @@ class SecurityController extends AbstractController
         $user = $token->getUser();
 
         if ($user->getIsEnable()) {
-
             return $this->render('registration/alreadyRegister.html.twig');
         }
 
         if ($token->getExpiresAt()) {
-
             $user->setIsEnable(true);
 
             $manager->flush();
 
-
             return $this->render('/registration/activated.html.twig');
-
         }
 
         $manager->remove($token);
@@ -131,12 +129,12 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-
     }
 
     /**
      * @IsGranted("ROLE_USER")
      * @Route("/admin/delete/user", name="delete_user")
+     *
      * @return Response
      */
     public function deleteUser(): Response
@@ -147,7 +145,9 @@ class SecurityController extends AbstractController
     /**
      * @IsGranted("ROLE_USER")
      * @Route("/admin/confirm/delete/user/{id}",name="confirm_delete_user", requirements={"id"="\d+"})
+     *
      * @param EntityManagerInterface $entityManager
+     *
      * @return Response
      */
     public function confirmDdeleteUser(EntityManagerInterface $entityManager): Response
@@ -156,15 +156,18 @@ class SecurityController extends AbstractController
         $user = $this->getUser();
         $entityManager->remove($user);
         $entityManager->flush();
+
         return $this->redirectToRoute('app_homepage');
     }
 
     /**
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/bann/user/{id}", name="banne_user", requirements={"id"="\d+"})
-     * @param User $user
+     *
+     * @param User                   $user
      * @param EntityManagerInterface $entityManager
-     * @param UserRepository $userRepository
+     * @param UserRepository         $userRepository
+     *
      * @return Response
      */
     public function banneUser(User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
@@ -178,13 +181,15 @@ class SecurityController extends AbstractController
     /**
      *  @IsGranted("ROLE_ADMIN")
      * @Route("/admin/user/index", name="admin_user_index")
+     *
      * @param UserRepository $userRepository
+     *
      * @return Response
      */
     public function allUser(UserRepository $userRepository): Response
     {
         return $this->render('user_admin/index.html.twig', [
-            'users' => $userRepository->findBy([], ['id' => 'DESC'])
+            'users' => $userRepository->findBy([], ['id' => 'DESC']),
         ]);
     }
 }
