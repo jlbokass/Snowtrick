@@ -3,9 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
+use App\Entity\Image;
+use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
+use App\Repository\ImageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -13,10 +21,10 @@ class ArticleController extends AbstractController
     /**
      * @Route("/",name="app_homepage")
      */
-    public function homepage(ArticleRepository $articleRepository)
+    public function homepage(ArticleRepository $articleRepository, ImageRepository $imageRepository)
     {
         /** @var Article $articles */
-        $articles = $articleRepository->findAllPublishedOrderedByNewest();
+        $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 8, 0);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -24,24 +32,55 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/articles", name="app_articles")
+     * @Route("/article/show/{id}", name="article_show")
+     *
+     * @param Article $article
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
      */
-    public function article(ArticleRepository $articleRepository)
+    public function show(
+        Article $article,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response
     {
-        $articles = $articleRepository->findAllPublishedOrderedByNewest();
+        $form = $this->createForm(CommentType::class);
+        $form->handleRequest($request);
 
-        return $this->render('article/article.html.twig', [
-            'articles' => $articles
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Comment $comment */
+            $comment = $form->getData();
+            $comment->setArticle($article);
+            $comment->setUser($this->getUser());
+
+            $manager->persist($comment);
+            $manager->flush();
+
+            return $this->redirectToRoute('article_show', [
+                'id' => $article->getId()
+            ]);
+        }
+
+        return $this->render('article/show.html.twig', [
+            'article' => $article,
+            'formComment' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/news/{slug}", name="article_show")
+     * Get the 15 next tricks in the database and create a Twig file with them that will be displayed via Javascript
+     *
+     * @Route("/{start}", name="loadMoreTricks", requirements={"start": "\d+"})
      */
-    public function show(Article $article)
+    public function loadMoreTricks(ArticleRepository $articleRepository, $start = 4)
     {
-        return $this->render('article/show.html.twig', [
-            'article' => $article,
+        // Get 15 tricks from the start position
+        $article = $articleRepository->findBy([], ['createdAt' => 'DESC'], 4, $start);
+
+        return $this->render('article/loadMoreArticle.html.twig', [
+            'articles' => $article
         ]);
     }
 }

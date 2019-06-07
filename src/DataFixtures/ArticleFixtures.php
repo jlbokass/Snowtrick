@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\User;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -30,33 +31,8 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
         'Backside Rodeo',
     ];
 
-    private static $articleImages = [
-        'snow1.jpg',
-        'snow2.jpg',
-        'snow3.jpg',
-        'snow4.jpg',
-        'snow5.jpg',
-        'snow6.jpg',
-        'snow7.jpg',
-        'snow8.jpg',
-        'snow9.jpg',
-        'snow10.jpg',
-        'snow11.jpg',
-        'snow12.jpg',
-        'snow13.jpg',
-        'snow14.jpg',
-        'snow15.jpg',
-        'snow16.jpg',
-        'snow17.jpg',
-        'snow18.jpg',
-        'snow19.jpg',
-    ];
+    private static $articleContents = [
 
-    private static $articleAuthors = [
-      'Black Panther',
-      'Thor the God',
-      'Hulk the Monster',
-      'Black Window',
     ];
 
     protected function loadData(ObjectManager $manager)
@@ -72,10 +48,21 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
             $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
         }
 
-        $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
-            ->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
+        /** @var Category[] $category */
+        $category = $this->getRandomReferences(Category::class, $this->faker->numberBetween(1,6));
 
-        $article->setCategory($this->getRandomReference(Category::class));
+        foreach ($category as $category) {
+
+            $article->setCategory($category);
+        }
+
+        /** @var User[] $user */
+        $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,2));
+
+        foreach ($user as $user) {
+
+            $article->setUser($user);
+        }
 
     });
 
@@ -85,6 +72,7 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            UserFixture::class,
             CategoryFixtures::class,
         ];
     }

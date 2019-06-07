@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="p-3 mt-4 shadow">
+                    {% block content_body %}
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('admin_article_index') }}">Article</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('admin_category_index') }}">Category</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('admin_user_index') }}">User</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('comment_admin') }}">Comment</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3 class="mt-5">{% block manager_name %}{% endblock %}</h3>
+                            <span class="float-right mb-3">{% block add %}{% endblock %}</span>
+                            <form>
+                                <div class="input-group mb-3">
+                                    <input type="text"
+                                           name="q"
+                                           class="form-control"
+                                           placeholder="Search..."
+                                           value="{{ app.request.query.get('q') }}"
+                                    >
+                                    <div class="input-group-append">
+                                        <button type="submit"
+                                                class="btn btn-outline-secondary">
+                                            <span class="fa fa-search"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{% block entity_title %}{% endblock %}</th>
+                                    <th>Author</th>
+                                    <th>{% block var1 %}{% endblock %}</th>
+                                    <th>created</th>
+                                    <th colspan="2">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% block main_content %}{% endblock %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% endblock %}

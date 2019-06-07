@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+   <div class="container form-signin mt-5">
+       <div class="card">
+           <div class="card-body">
+               <div class="row">
+                   <div class="col-sm-12">
+                       <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
+
+                       {{ form_start(registrationForm, {'attr': {
+                           'novalidate': 'novalidate'
+                       }}) }}
+                       {{ form_row(registrationForm.email) }}
+                       {{ form_row(registrationForm.password) }}
+                       {{ form_row(registrationForm.username) }}
+
+                       <button class="btn btn-lg btn-success">Register</button>
+                       {{ form_end(registrationForm) }}
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+{% endblock %}

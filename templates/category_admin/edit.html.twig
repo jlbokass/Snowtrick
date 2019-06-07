@@ -1,0 +1,17 @@
+{% extends 'content_base.html.twig' %}
+
+{% block manager_name %}
+    Edit a category
+{% endblock %}
+
+{% block content_body %}
+    <h1>Edit a category</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            {% include 'category_admin/form.html.twig' %}
+            <button type="submit" class="btn btn-success">Edit</button>
+            <button type="reset" class="btn btn-info" onclick="javascritp:location.href='{{ path('admin_category_index') }}'">Cancel</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

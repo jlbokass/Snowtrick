@@ -2,52 +2,171 @@
 
 
 
-{% block title %}Hello from homepage{% endblock %}
+{% block title %}Welcome to Snowtrick{% endblock %}
 
 {% block body %}
     <!-- Fullscreen image -->
-    <section class="image-fullscreen mt-5">
+    <div class="image-fullscreen mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-sm-6">
                     <h1 class="mt-5">Share your Passion!</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt voluptates rerum eveniet sapiente repellat esse, doloremque quod recusandae deleniti nostrum assumenda vel beatae sed aut modi nesciunt porro quisquam voluptatem.</p>
+                    <p>Sport will seek fear to dominate it<br>fatigue to triumph over it<br>difficulty in overcoming it</p>
                 </div>
             </div>
+            <a href="#section1"> <i class="fas fa-arrow-circle-down fa-2x my-dropdown-button fluid"></i></a>
         </div>
-    </section>
-
+    </div>
+    <!-- Filter -->
+    <div class="container"  style="margin-top: 200px" id="section1">
+        <!-- alert -->
+        <div class="mt-3">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Category
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Date
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Newest</a>
+                            <a class="dropdown-item" href="#">Older</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 <!-- Article -->
-<section class="mt-5">
+<div class="mt-2">
     <div class="container">
         <!-- Page Features -->
-        <div class="row text-center">
-
+        <div class="row text-center" id="trickList">
             {% for article in articles %}
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
-                        <img class="card-img-top" src="{{ asset(article.imagePath) }}" alt="test">
+                            {% if article.images is defined %}
+                                <img class="card-img-top" src="{{ asset('uploads/article_image/')~article.coverImage }}" alt="test">
+                            {% else %}
+                                <img class="card-img-top" src="{{ asset('uploads/article_image/snow14.jpg') }}" alt="test">
+                            {% endif %}
                         <div class="card-footer d-flex align-items-baseline">
                             <div>
-                                <h5 class="card-title"><a href="{{ path('article_show', {slug: article.slug}) }}">{{ article.title }}</a></h5>
+                                <h5 class="card-title"><a href="{{ path('article_show', {id: article.id}) }}">{{ article.title }}</a></h5>
                             </div>
-                            <div class="ml-auto d-flex align-items-baseline">
-                                <div class="mr-2">
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
+                            {% if is_granted('ROLE_USER') %}
+                                <div class="ml-auto d-flex align-items-baseline">
+                                    {% if is_granted('EDIT', article) %}
+                                        <div class="mr-2">
+                                            <button type="submit" class="btn btn-sm btn-outline-warning" onclick="javascritp:location.href='{{ path('edit_article', {id: article.id}) }}'">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted('DELETE', article) %}
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#myModal">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+
+                                            <!-- The Modal -->
+                                            <div class="modal fade" id="myModal">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Modal Heading</h4>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            Delete <strong>{{ article.id }}</strong> ?
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <a href="{{ path('delete_article', {id : article.id}) }}" class="btn btn-info">Delete</a>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <button id="loadMoreTricks" class="btn btn-primary">Load more</button>
+            </div>
+        </div>
     </div>
-</section>
+    <div class="container-fluid mb-5">
+        <a href="#section1"> <i id="arrow-up" class="fas fa-arrow-circle-up fa-2x float-right"></i></a>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        $("#arrow-up").hide();
+        click = 0;
+        function loadMoreTricks(event) {
+            event.preventDefault();
+            click++;
+            var start = 4 * click;
+            const url = "{{ path('loadMoreTricks') }}" + start;
+
+            axios.get(url).then(function(response) {
+                console.log(response);
+                $("#trickList").append(response.data);
+                $("#arrow-up").show();
+            }).catch(function (error) {
+                if (response.status === 403) {
+                    window.alert("Vous n'êtes pas autorisé à effectuer cette action !");
+                }
+                else if (response.status === 404) {
+                    window.alert("La page appelé n'existe pas");
+                }
+                else {
+                    window.alert("Une erreur est survenue !");
+                }
+            });
+        }
+        document.getElementById("loadMoreTricks").addEventListener("click", loadMoreTricks);
+    </script>
 {% endblock %}

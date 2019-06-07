@@ -5,17 +5,22 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     errorPath="title",
+ *     message="This title already exist"
+ * )
  */
 class Article
 {
-    use TimestampableEntity;
+    private const DEFAULT_IMG = 'snow13.jpg';
 
     /**
      * @ORM\Id()
@@ -26,17 +31,27 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message= " The title cannot be null ")
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 30,
+     *     minMessage="The title must be at least {{ limit }} characters long",
+     *     maxMessage="The title cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     * @Gedmo\Slug(fields={"title"})
-     */
-    private $slug;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false)
+     *  @Assert\NotBlank(message= " The content cannot be null ")
+     * @Assert\Length(
+     *     min = 10,
+     *     max = 400,
+     *     minMessage="The content must be at least {{ limit }} characters long",
+     *     maxMessage="The content cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      */
     private $content;
 
@@ -46,17 +61,17 @@ class Article
     private $publishedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime")
      */
-    private $author;
+    private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $imageFilename;
+    private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
@@ -67,9 +82,22 @@ class Article
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="article", cascade={"persist", "remove"})
+     */
+    private $images;
+
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->comments = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,33 +153,24 @@ class Article
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getCreatedAt()
     {
-        return $this->author;
+        return $this->createdAt;
     }
 
-    public function setAuthor(string $author): self
+    public function setCreatedAt($createdAt): void
     {
-        $this->author = $author;
-
-        return $this;
+        $this->createdAt = $createdAt;
     }
 
-    public function getImageFilename(): ?string
+    public function getUpdatedAt()
     {
-        return $this->imageFilename;
+        return $this->updatedAt;
     }
 
-    public function setImageFilename(?string $imageFilename): self
+    public function setUpdatedAt($updatedAt): void
     {
-        $this->imageFilename = $imageFilename;
-
-        return $this;
-    }
-
-    public function getImagePath()
-    {
-        return 'images/'.$this->getImageFilename();
+        $this->updatedAt = $updatedAt;
     }
 
     /**
@@ -205,5 +224,53 @@ class Article
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getArticle() === $this) {
+                $image->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCoverImage()
+    {
+        return self::DEFAULT_IMG;
     }
 }

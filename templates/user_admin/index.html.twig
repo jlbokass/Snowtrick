@@ -1,0 +1,61 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block manager_name %}
+    Manage user
+{% endblock %}
+
+{% block add %}
+    <a href="{{ path('add_article') }}" class="bg-success p-2 rounded text-light">Add a user</a>
+{% endblock %}
+
+{% block entity_title %}
+    Title
+{% endblock %}
+
+{% block var1 %}
+    Category
+{% endblock %}
+
+{% block main_content %}
+    {% for user in users %}
+        <tr>
+            <td>
+                <a href="">
+                    {{ user.id }}
+                </a>
+            </td>
+            <td>
+                {{ user.username }}
+            </td>
+            <td style="width: 20%">
+                {{ user.email }}
+            </td>
+            <td>
+                {{ user.id }}
+            </td>
+            <td>
+                <!-- Example single danger button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Action
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Admin</a>
+                        <a class="dropdown-item" href="#">User</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger">
+                    bann
+                </button>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4" class="text-center">
+                No articles found
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}

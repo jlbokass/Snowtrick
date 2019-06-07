@@ -1,74 +1,89 @@
 {% extends 'base.html.twig' %}
-
-
-
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .jumbotron {
+            background-image: {{ asset('uploads/article_image/snow14.jpg') }};
+        }
+    </style>
+{% endblock %}
 {% block title %}Read: {{ article.title }}{% endblock %}
-
 {% block body %}
-    <!-- Article detaile -->
-    <section>
-        <div class="jumbotron jumbotron-fluid">
-            <img src="{{ asset(article.imagePath) }}" alt="">
+    <div>
+        <div class="jumbotron jumbotron-fluid"
+        style="background-image: '{{ asset('uploads/article_image/snow14.jpg') }}';
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 500px">
             <div class="container">
-                <h1>{{ article.title }}</h1>
+                <h1 class="display-4">{{ article.title }}</h1>
+                <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
             </div>
         </div>
-
-        <div class="container">
+        <!-- Article images -->
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12 p-3">
+                {% for image in article.images %}
+                    <div class="col-sm-4">
+                        <img src="{{ asset('uploads/article_image/')~image.imageFilename }}" alt="" width="100%">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Article content -->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-sm-12 p-3">
+                    <h2>{{ article.title }} </h2>
                     <p>{{ article.content }}</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <p class="share-icons mb-5"><span class="pr-1">Share:</span> <i class="pr-1 fab fa-facebook-square"></i></i><i class="pr-1 fab fa-twitter-square"></i><i class="fab fa-instagram"></i></p>
-                </div>
-            </div>
         </div>
-    </section>
-    <div class="container-fluid">
-        <div class="row text-center">
-            <div class="col-md-12 p-3 bg-info">
-                <span class="mr-2">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</span>
-                <span class="mr-2">{{ article.author }}</span>
-                <span>{{ article.category.categoryName }}</span>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <p>
+                    <button class="btn btn-outline-dark btn-sm">author: <span class="text-info">{{ article.user.username }}</span></button>
+                    <button class="btn btn-outline-dark btn-sm">{{ article.publishedAt? article.publishedAt|time_diff : 'unpublished' }}</button>
+                    <button class="btn btn-outline-dark btn-sm">Category: <span class="text-primary">{{ article.category.title }}</span></button>
+                </p>
             </div>
         </div>
     </div>
-
-    <div class="container mt-5">
+    <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h3><i class="pr-3 fa fa-comment"></i>{{ article.nonDeletedComments|length }} Comments</h3>
+                <h4><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} Comments</h4>
                 <hr>
-
                 <div class="row mb-5">
-                    <div class="col-sm-12">
-                        <img class="comment-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
-                        <div class="comment-container d-inline-block pl-3 align-top">
-                            <span class="commenter-name">Amy Oort</span>
-                            <div class="form-group">
-                                <textarea class="form-control comment-form" id="articleText" rows="1"></textarea>
+                    {% if app.user %}
+                        <div class="col-sm-12">
+                            <img class="comment-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
+                            <div class="col-sm-12 d-inline-block pl-3 align-top">
+                                <span class="commenter-name">{{ app.user.username }}</span>
+                                {% include 'article/formComment.html.twig' %}
+                                <button type="submit" class="btn btn-info">Comment</button>
+                                {{ form_end(formComment) }}
                             </div>
-                            <button type="submit" class="btn btn-info">Comment</button>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
 
                 <div class="row">
-                    {% for comment in article.nonDeletedComments %}
+                    {% for comment in article.comments %}
                         <div class="col-sm-12">
-                            <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
-                            <div class="comment-container d-inline-block pl-3 align-top">
-                                <span class="commenter-name">{{ comment.authorName }}</span>
-                                <small>{{ comment.createdAt|time_diff }}</small>
-                                {% if comment.isDeleted %}
-                                    <i class="fas fa-times"></i> deleted
-                                {% endif %}
-                                <br>
-                                <span class="comment"> {{ comment.content }}</span>
-                                <p><a href="#">Reply</a></p>
+                            <div class="col-sm-2">
+                                <img class="comment-img rounded-circle align-top" src="{{ asset('images/alien-profile.png') }}">
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="comment-container d-inline-block pl-3 align-top">
+                                    <span class="commenter-name">{{ comment.user.username }}</span>
+                                    <small>{{ comment.createdAt|time_diff }}</small>
+                                    <br>
+                                    <span class="comment"> {{ comment.content }}</span>
+                                    <p><a href="#">Reply</a></p>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -76,4 +91,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
