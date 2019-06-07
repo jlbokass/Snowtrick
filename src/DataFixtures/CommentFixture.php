@@ -13,7 +13,6 @@ class CommentFixture extends BaseFixture implements DependentFixtureInterface
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Comment::class, 100, function (Comment $comment) {
-
            $comment->setContent(
                $this->faker->boolean ? $this->faker->paragraph : $this->faker->sentences(4, true)
            );
@@ -24,7 +23,6 @@ class CommentFixture extends BaseFixture implements DependentFixtureInterface
             $user = $this->getRandomReferences(User::class, $this->faker->numberBetween(1,2));
 
             foreach ($user as $user) {
-
                 $comment->setUser($user);
             }
 
@@ -33,7 +31,6 @@ class CommentFixture extends BaseFixture implements DependentFixtureInterface
             foreach ($article as $article) {
                 $comment->setArticle($article);
             }
-
         });
 
         $manager->flush();
@@ -46,6 +43,4 @@ class CommentFixture extends BaseFixture implements DependentFixtureInterface
             ArticleFixtures::class,
         ];
     }
-
-
 }

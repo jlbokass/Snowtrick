@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class CategoryAdminController
- * @package App\Controller
+ * Class CategoryAdminController.
  *
  * @IsGranted("ROLE_USER")
  */
@@ -22,8 +21,10 @@ class CategoryAdminController extends AbstractController
 {
     /**
      * @Route("/admin/category/index", name="admin_category_index")
+     *
      * @param CategoryRepository $categoryRepository
-     * @param Request $request
+     * @param Request            $request
+     *
      * @return Response
      */
     public function index(CategoryRepository $categoryRepository, Request $request): Response
@@ -39,8 +40,10 @@ class CategoryAdminController extends AbstractController
 
     /**
      * @Route("admin/category/new", name="add_category")
+     *
      * @param EntityManagerInterface $manager
-     * @param Request $request
+     * @param Request                $request
+     *
      * @return Response
      */
     public function new(EntityManagerInterface $manager, Request $request): Response
@@ -49,7 +52,6 @@ class CategoryAdminController extends AbstractController
         $categoryForm->handleRequest($request);
 
         if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
-
             $category = $categoryForm->getData();
 
             $user = $this->getUser();
@@ -69,9 +71,10 @@ class CategoryAdminController extends AbstractController
     /**
      * @Route("/admin/category/edit/{id}", name="edit_category", requirements={"id"="\d+"})
      *
-     * @param Category $category
+     * @param Category               $category
      * @param EntityManagerInterface $manager
-     * @param Request $request
+     * @param Request                $request
+     *
      * @return Response
      */
     public function edit(Category $category, EntityManagerInterface $manager, Request $request): Response
@@ -82,7 +85,6 @@ class CategoryAdminController extends AbstractController
         $categoryForm->handleRequest($request);
 
         if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
-
             $manager->flush();
 
             $this->addFlash(
@@ -101,8 +103,10 @@ class CategoryAdminController extends AbstractController
 
     /**
      * @Route("/admin/category/delete/{id}", name="delete_category", requirements={"id"="\d+"})
-     * @param Category $category
+     *
+     * @param Category               $category
      * @param EntityManagerInterface $manager
+     *
      * @return Response
      */
     public function delete(Category $category, EntityManagerInterface $manager): Response

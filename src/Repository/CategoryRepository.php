@@ -50,7 +50,7 @@ class CategoryRepository extends ServiceEntityRepository
     */
 
     /**
-     * @param null|string $term
+     * @param string|null $term
      *
      * @return Category[]
      */
@@ -88,7 +88,6 @@ class CategoryRepository extends ServiceEntityRepository
     private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
     {
         return $this->getOrCreateQueryBuider($qb);
-
     }
 
     private function addIsNotPublishedQueryBuilder(QueryBuilder $qb = null)
@@ -99,6 +98,6 @@ class CategoryRepository extends ServiceEntityRepository
 
     private function getOrCreateQueryBuider(QueryBuilder $qb = null)
     {
-        return $qb ? : $this->createQueryBuilder('c');
+        return $qb ?: $this->createQueryBuilder('c');
     }
 }

@@ -54,7 +54,6 @@ class ApiToken
         return $this->expiresAt;
     }
 
-
     public function getUser(): ?User
     {
         return $this->user;

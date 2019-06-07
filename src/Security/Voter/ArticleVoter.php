@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArticleVoter extends Voter
 {
-
     protected function supports($attribute, $subject)
     {
         return in_array($attribute, ['EDIT', 'DELETE'])
@@ -18,7 +17,7 @@ class ArticleVoter extends Voter
 
     protected function voteOnAttribute($attribute, $article, TokenInterface $token)
     {
-        /** @var  Article $article */
+        /** @var Article $article */
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {

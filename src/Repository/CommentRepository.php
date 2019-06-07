@@ -20,7 +20,7 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param null|string $term
+     * @param string|null $term
      *
      * @return Comment[]
      */

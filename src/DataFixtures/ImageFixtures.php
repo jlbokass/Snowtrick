@@ -34,12 +34,10 @@ class ImageFixtures extends BaseFixture implements DependentFixtureInterface
     public function loadData(ObjectManager $manager)
     {
         $this->createMany(Image::class, 17, function (Image $image) {
-
             $image->setImageFilename($this->faker->unique()->randomElement(self::$articleImages));
             $article = $this->getRandomReferences(Article::class, $this->faker->numberBetween(1, 17));
 
             foreach ($article as $article) {
-
                 $image->setArticle($article);
             }
         });
@@ -53,6 +51,4 @@ class ImageFixtures extends BaseFixture implements DependentFixtureInterface
             ArticleFixtures::class,
         ];
     }
-
-
 }

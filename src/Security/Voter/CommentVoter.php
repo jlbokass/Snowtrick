@@ -44,6 +44,5 @@ class CommentVoter extends Voter
         }
 
         return false;
-
     }
 }
