@@ -1,3 +1,4 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/9348f6fba528c2c8b9df/maintainability)](https://codeclimate.com/github/jlbokass/Snowtrick/maintainability)
 # Welcome to my Symfony 4.2 project
 
 In this simple Symfony project, i buid API website. 
