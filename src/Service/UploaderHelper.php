@@ -22,7 +22,7 @@ class UploaderHelper
     public function uploadArticleImage(UploadedFile $uploadedFile): string
     {
         $destination = $this->uploadsPath;
-        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(),PATHINFO_FILENAME);
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
         $newFilename = $this->filenameUrlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
         $uploadedFile->move(
             $destination,

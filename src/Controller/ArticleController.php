@@ -17,11 +17,16 @@ class ArticleController extends AbstractController
 {
     /**
      * @Route("/",name="app_homepage")
+     *
+     * @param ArticleRepository $articleRepository
+     * @param ImageRepository $imageRepository
+     *
+     * @return Response
      */
-    public function homepage(ArticleRepository $articleRepository, ImageRepository $imageRepository)
+    public function homepage(ArticleRepository $articleRepository, ImageRepository $imageRepository): Response
     {
         /** @var Article $articles */
-        $articles = $articleRepository->findBy([],['createdAt' => 'DESC'], 8, 0);
+        $articles = $articleRepository->findBy([], ['createdAt' => 'DESC'], 8, 0);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -41,8 +46,7 @@ class ArticleController extends AbstractController
         Article $article,
         Request $request,
         EntityManagerInterface $manager
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(CommentType::class);
         $form->handleRequest($request);
 

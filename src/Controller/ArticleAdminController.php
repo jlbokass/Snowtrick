@@ -19,8 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ArticleAdminController.
- *
- * @IsGranted("ROLE_USER")
  */
 class ArticleAdminController extends AbstractController
 {

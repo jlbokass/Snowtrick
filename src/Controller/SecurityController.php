@@ -95,7 +95,7 @@ class SecurityController extends AbstractController
      *
      * @return Response
      */
-    public function validateToken($token,ApiTokenRepository $repository, EntityManagerInterface $manager): Response
+    public function validateToken($token, ApiTokenRepository $repository, EntityManagerInterface $manager): Response
     {
         $token = $repository->findOneBy(['token' => $token]);
 
@@ -150,7 +150,7 @@ class SecurityController extends AbstractController
      *
      * @return Response
      */
-    public function confirmDdeleteUser(EntityManagerInterface $entityManager): Response
+    public function confirmDeleteUser(EntityManagerInterface $entityManager): Response
     {
         $this->logout();
         $user = $this->getUser();

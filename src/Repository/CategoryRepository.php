@@ -59,7 +59,7 @@ class CategoryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.articles', 'a')
             ->addSelect('a');
-            //->addSelect('user');
+        //->addSelect('user');
 
         if ($term) {
             $qb->andWhere('

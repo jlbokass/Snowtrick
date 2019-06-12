@@ -1,18 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jean-le-grandbokassa
- * Date: 13/05/2019
- * Time: 22:03.
- */
+
 
 namespace App\Service;
+
 
 use App\Entity\ApiToken;
 use App\Entity\User;
 use Twig\Environment as Twig;
 
-class TokenSender
+class ResetPasswordSender
 {
     private $mailer;
 
@@ -26,12 +22,12 @@ class TokenSender
 
     public function sendToken(User $user, ApiToken $token)
     {
-        $message = (new \Swift_Message('Please confirm your registration'))
+        $message = (new \Swift_Message('Snowtrick reset password'))
             ->setFrom('contact@snowtrick.com')
             ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
-                    'registration/activation.html.twig', [
+                    'password_admin/reset_email.html.twig', [
                         'token' => $token->getToken(),
                     ]
                 ),
@@ -39,13 +35,13 @@ class TokenSender
             )
             ->addPart(
                 $this->twig->render(
-                    'registration/activation.txt.twig', [
+                    'password_admin/reset_email.txt.twig', [
                         'token' => $token->getToken(),
                     ]
                 ),
                 'text/plain'
             )
-            ;
+        ;
 
         $this->mailer->send($message);
     }
