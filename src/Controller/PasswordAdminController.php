@@ -4,24 +4,26 @@ namespace App\Controller;
 
 use App\Entity\ApiToken;
 use App\Form\EmailToResetPasswordType;
+use App\Form\ResetPasswordType;
+use App\Repository\ApiTokenRepository;
 use App\Repository\UserRepository;
 use App\Service\ResetPasswordSender;
-use App\Service\TokenSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PasswordAdminController extends AbstractController
 {
     /**
      * @Route("/forgot/password", name="forgot_password")
      *
-     * @param UserRepository         $userRepository
+     * @param UserRepository $userRepository
      * @param EntityManagerInterface $manager
-     * @param Request                $request
-     * @param ResetPasswordSender            $sender
+     * @param Request $request
+     * @param ResetPasswordSender $sender
      *
      * @return Response
      */
@@ -50,6 +52,7 @@ class PasswordAdminController extends AbstractController
 
             $token = new ApiToken($user);
             $sender->sendToken($user, $token);
+            $manager->persist($token);
             $manager->flush();
 
             $this->addFlash(
@@ -65,8 +68,40 @@ class PasswordAdminController extends AbstractController
         ]);
     }
 
-    public function resetPassword()
+    /**
+     * @Route("/confirmation/reset-password/{token}", name="reset_token_validation")
+     *
+     * @param $token
+     * @param ApiTokenRepository $repository
+     * @param EntityManagerInterface $manager
+     *
+     * @return Response
+     */
+    public function validateResetToken(
+        $token,
+        ApiTokenRepository $repository,
+        EntityManagerInterface $manager,
+        UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        // ...
+        $token = $repository->findOneBy(['token' => $token]);
+
+        if (!$token->getExpiresAt()) {
+            return $this->render('password_admin/token_expired.html.twig');
+        }
+
+        $user = $token->getUser();
+
+        $form = $this->createForm(ResetPasswordType::class, $user);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($passwordEncoder->encodePassword($form->get('password')->getData()));
+            $manager->flush();
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('password_admin/reset.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }
