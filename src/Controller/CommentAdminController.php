@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CommentAdminController.
  *
- * @IsGranted("ROLE_USER")
+ * @IsGranted("ROLE_ADMIN")
  */
 class CommentAdminController extends AbstractController
 {

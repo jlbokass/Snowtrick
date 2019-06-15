@@ -12,12 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * @IsGranted("ROLE_USER")
  * Class ProfileController.
  */
 class ProfileController extends AbstractController
 {
     /**
-     *  @IsGranted("ROLE_USER")
      * @Route("/profile/show", name="profile_show")
      */
     public function index()
@@ -27,7 +27,6 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_USER")
      * @Route("/profile/edit", name="profile_edit")
      *
      * @param Request                $request
