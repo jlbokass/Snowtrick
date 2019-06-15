@@ -19,7 +19,7 @@ class ArticleController extends AbstractController
      * @Route("/",name="app_homepage")
      *
      * @param ArticleRepository $articleRepository
-     * @param ImageRepository $imageRepository
+     * @param ImageRepository   $imageRepository
      *
      * @return Response
      */

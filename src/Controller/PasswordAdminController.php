@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ApiToken;
+use App\Entity\User;
 use App\Form\EmailToResetPasswordType;
 use App\Form\ResetPasswordType;
 use App\Repository\ApiTokenRepository;
@@ -20,10 +21,10 @@ class PasswordAdminController extends AbstractController
     /**
      * @Route("/forgot/password", name="forgot_password")
      *
-     * @param UserRepository $userRepository
+     * @param UserRepository         $userRepository
      * @param EntityManagerInterface $manager
-     * @param Request $request
-     * @param ResetPasswordSender $sender
+     * @param Request                $request
+     * @param ResetPasswordSender    $sender
      *
      * @return Response
      */
@@ -72,7 +73,7 @@ class PasswordAdminController extends AbstractController
      * @Route("/confirmation/reset-password/{token}", name="reset_token_validation")
      *
      * @param $token
-     * @param ApiTokenRepository $repository
+     * @param ApiTokenRepository     $repository
      * @param EntityManagerInterface $manager
      *
      * @return Response
@@ -80,28 +81,34 @@ class PasswordAdminController extends AbstractController
     public function validateResetToken(
         $token,
         ApiTokenRepository $repository,
-        EntityManagerInterface $manager,
-        UserPasswordEncoderInterface $passwordEncoder): Response
-    {
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        EntityManagerInterface $manager
+    ): Response {
         $token = $repository->findOneBy(['token' => $token]);
 
         if (!$token->getExpiresAt()) {
             return $this->render('password_admin/token_expired.html.twig');
         }
 
+        /** @var User $user */
         $user = $token->getUser();
 
         $form = $this->createForm(ResetPasswordType::class, $user);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($passwordEncoder->encodePassword($form->get('password')->getData()));
+            $user->setPassword($passwordEncoder->encodePassword(
+                $user,
+                $form->get('password')->getData()));
+
             $manager->flush();
 
             return $this->redirectToRoute('app_login');
         }
 
         return $this->render('password_admin/reset.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 }

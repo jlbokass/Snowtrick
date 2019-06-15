@@ -13,9 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * @IsGranted("ROLE_ADMIN")
  * Class CategoryAdminController.
- *
- *
  */
 class CategoryAdminController extends AbstractController
 {
