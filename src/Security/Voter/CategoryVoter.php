@@ -27,12 +27,12 @@ class CategoryVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'EDIT':
-                if($category->getUser() === $user) {
+                if ($category->getUser() === $user) {
                     return true;
                 }
                 break;
             case 'DELETE':
-                if($category->getUser() === $user) {
+                if ($category->getUser() === $user) {
                     return true;
                 }
                 break;

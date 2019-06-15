@@ -19,8 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ArticleAdminController.
- *
- * @IsGranted("ROLE_USER")
  */
 class ArticleAdminController extends AbstractController
 {
@@ -148,7 +146,7 @@ class ArticleAdminController extends AbstractController
     /**
      *  @IsGranted("ROLE_USER")
      * @Route("/admin/article/delete/image/{id}",
-     *     requirements={"id"="\d+"},
+     *      requirements={"id"="\d+"},
      *     name="delete_image",
      *     methods={"POST"},
      *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")

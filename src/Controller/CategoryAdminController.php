@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CategoryAdminController.
  *
- * @IsGranted("ROLE_USER")
+ *
  */
 class CategoryAdminController extends AbstractController
 {
