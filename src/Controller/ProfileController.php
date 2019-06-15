@@ -2,12 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\ApiToken;
 use App\Entity\User;
-use App\Form\EmailToResetPasswordType;
 use App\Form\ProfileType;
-use App\Repository\UserRepository;
-use App\Service\TokenSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
