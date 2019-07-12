@@ -14,19 +14,4 @@ into practice. In no way the errors that could be found are the fact of the peop
 1. Run **composer install** to install the project dependencies.
 1. Configure your web server to have the **public** folder as the web root.
 1. Open [env.dist](/env.dist) and enter your database configuration data.
-
-See below for more details.
-
-## Errors
-
-If the `SHOW_ERRORS` configuration setting is set to `DEV`, full error detail will be shown in the browser if an error or exception occurs. If it's set to `PROD`, a generic message will be shown depending on the error.
-
-## Translations
-
-Comming soon 
-
-## Thanks
-
-comming soon
-
 ---
