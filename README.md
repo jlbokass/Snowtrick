@@ -5,9 +5,6 @@ In this simple Symfony project, i build API website.
 
 This work is done as part of my PHP web developer training with Openclassroom - project 6.
 
-**Attention, this blog is my reflection: I used the knowledge of different courses that I learned and put them 
-into practice. In no way the errors that could be found are the fact of the people cited.**
-
 ## Installation
 
 1. First, download the framework, either directly or by cloning the repo.
