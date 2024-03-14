@@ -3,7 +3,7 @@
 
 In this simple Symfony project, i build API website. 
 
-This work is done as part of my PHP web developer training with Openclassroom - project 6.
+This work is done as part of my PHP web developer.
 
 ## Installation
 
